@@ -145,67 +145,72 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- HOME VIEW (HERO) --- */
-        .hero-card {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #1E3A8A 100%);
-            border-radius: var(--radius-lg);
-            padding: 40px 30px;
-            color: white;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+        /* --- HOME GRID (DAYS LIST) --- */
+        .days-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .day-card-btn {
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            text-align: left;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
 
-        .hero-card::after {
+        .day-card-btn::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0.5;
-            pointer-events: none;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
-        .hero-title {
-            font-size: 2.5rem;
+        .day-card-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .day-card-btn:active::before {
+            opacity: 1;
+        }
+
+        .day-card-title {
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-            line-height: 1.1;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .hero-dates {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 30px;
+        .day-card-date {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #92400E;
+            background: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 12px;
             letter-spacing: 0.5px;
         }
 
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-            border: none;
-            padding: 18px 36px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border-radius: 100px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.96);
+        .day-card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            padding-right: 20px;
         }
 
         /* --- DAY VIEW & TIMELINE --- */
@@ -379,15 +384,15 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
             justify-content: space-evenly;
-            padding: 12px 10px 24px; /* Extra bottom padding for iOS safe area */
+            padding: 12px 10px 24px;
             z-index: 100;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.04);
         }
 
         .tab-btn {
@@ -402,7 +407,7 @@
             font-weight: 600;
             width: 80px;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: color 0.2s, opacity 0.2s;
         }
 
         .tab-icon {
@@ -422,8 +427,8 @@
         }
 
         .tab-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Utilities */
@@ -435,11 +440,20 @@
             .app-container {
                 padding: 40px;
             }
-            .hero-title {
-                font-size: 3.5rem;
-            }
             .day-headline {
                 font-size: 2.5rem;
+            }
+            .days-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .day-card-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+                border-color: rgba(0,0,0,0.08);
+            }
+            .day-card-btn:hover::before {
+                opacity: 1;
             }
             .card {
                 padding: 32px;
@@ -493,16 +507,53 @@
     <!-- MAIN APP CONTAINER -->
     <div class="app-container">
         
-        <!-- PANTALLA DE INICIO -->
+        <!-- PANTALLA DE INICIO (LISTADO DE DÍAS) -->
         <div id="view-home" class="view-section active">
-            <div class="hero-card">
-                <h2 class="hero-title">Nueva York</h2>
-                <div class="hero-dates">10 Días de Viaje</div>
-                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; font-weight: 500;">
-                    15 de Septiembre al 24 de Septiembre
-                </p>
-                <button class="btn-primary" onclick="goToDay(1)">
-                    Comenzar Aventura <span>✈️</span>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Nueva York - 10 Días</div>
+                <h2 class="day-headline">🗽 Itinerario del Viaje</h2>
+            </div>
+            
+            <div class="days-grid">
+                <button class="day-card-btn" onclick="goToDay(1)">
+                    <div class="day-card-title">Día 1 <span class="day-card-date">15 Sept</span></div>
+                    <div class="day-card-desc">Llegada (JFK), Compras en New Jersey y Noche en Times Square</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(2)">
+                    <div class="day-card-title">Día 2 <span class="day-card-date">16 Sept</span></div>
+                    <div class="day-card-desc">Bajo Manhattan, Liberty Island y Distrito Financiero</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(3)">
+                    <div class="day-card-title">Día 3 <span class="day-card-date">17 Sept</span></div>
+                    <div class="day-card-desc">Midtown Manhattan Ultra Pass Optimization (Día 2 NY Pass)</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(4)">
+                    <div class="day-card-title">Día 4 <span class="day-card-date">18 Sept</span></div>
+                    <div class="day-card-desc">Upper East Side Museums, Central Park & New York Illuminated Tour</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(5)">
+                    <div class="day-card-title">Día 5 <span class="day-card-date">19 Sept</span></div>
+                    <div class="day-card-desc">Hudson Yards, High Line, Chelsea, Greenwich Village, SoHo & TriBeCa</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(6)">
+                    <div class="day-card-title">Día 6 <span class="day-card-date">20 Sept</span></div>
+                    <div class="day-card-desc">Midtown, Central Park, 5th Ave & SUMMIT One Vanderbilt</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(7)">
+                    <div class="day-card-title">Día 7 <span class="day-card-date">21 Sept</span></div>
+                    <div class="day-card-desc">Tour Contrastes, Canal St, Chinatown, San Gennaro y Nolita</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(8)">
+                    <div class="day-card-title">Día 8 <span class="day-card-date">22 Sept</span></div>
+                    <div class="day-card-desc">East River, Roosevelt Island, Williamsburg, DUMBO & Staten Island</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(9)">
+                    <div class="day-card-title">Día 9 <span class="day-card-date">23 Sept</span></div>
+                    <div class="day-card-desc">Día Libre & Greenwich Village Local By Night</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(10)">
+                    <div class="day-card-title">Día 10 <span class="day-card-date">24 Sept</span></div>
+                    <div class="day-card-desc">Últimas Horas en Manhattan & Vuelo de Regreso</div>
                 </button>
             </div>
         </div>
@@ -1424,12 +1475,22 @@
             // Bottom Nav State
             if (currentDay === 'home') {
                 btnPrev.disabled = true;
-                btnNext.disabled = false;
+                btnNext.disabled = true;
+                btnPrev.style.visibility = 'hidden'; 
+                btnNext.style.visibility = 'hidden';
                 btnHome.classList.add('active');
             } else {
                 btnHome.classList.remove('active');
-                btnPrev.disabled = false;
+                
+                btnPrev.style.visibility = 'visible';
+                btnNext.style.visibility = 'visible';
+
+                btnPrev.disabled = (currentDay === 1);
                 btnNext.disabled = (currentDay === 10);
+                
+                // Ocultar botones en los extremos para dejarlo visualmente claro
+                if (currentDay === 1) btnPrev.style.visibility = 'hidden';
+                if (currentDay === 10) btnNext.style.visibility = 'hidden';
             }
 
             // Top Pill State & Auto-Scroll
@@ -1442,7 +1503,7 @@
         }
 
         function goToDay(day) {
-            if (currentDay === day) return; // Prevent re-triggering current view
+            if (currentDay === day) return;
             
             hideAllViews();
             currentDay = day;
@@ -1459,20 +1520,13 @@
         }
 
         function prevDay() {
-            if (currentDay === 'home') return;
-            if (currentDay === 1) {
-                goToDay('home');
-            } else {
-                goToDay(currentDay - 1);
-            }
+            if (currentDay === 'home' || currentDay === 1) return;
+            goToDay(currentDay - 1);
         }
 
         function nextDay() {
-            if (currentDay === 'home') {
-                goToDay(1);
-            } else if (currentDay < 10) {
-                goToDay(currentDay + 1);
-            }
+            if (currentDay === 'home' || currentDay === 10) return;
+            goToDay(currentDay + 1);
         }
 
         // Initialize state
