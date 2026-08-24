@@ -27,6 +27,11 @@
             --nav-height: 85px;
         }
 
+        html {
+            font-size: 16px; /* Base font size, will be modified by JS */
+            transition: font-size 0.2s ease-out; /* Smooth transition when resizing */
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -39,7 +44,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 100px; /* Space for bottom nav */
+            padding-bottom: 110px; /* Space for bottom nav */
             overscroll-behavior-y: none;
         }
 
@@ -78,6 +83,35 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* --- FONT SIZE CONTROLS --- */
+        .font-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .font-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-light);
+            color: var(--primary-dark);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .font-btn:active {
+            transform: scale(0.92);
+            background: var(--bg-color);
         }
 
         /* Horizontal Scroll Day Selector */
@@ -361,8 +395,9 @@
 
         .icon-box {
             background: #FFFFFF;
-            width: 40px; height: 40px;
-            border-radius: 10px;
+            width: 2.5rem; 
+            height: 2.5rem;
+            border-radius: 0.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -405,7 +440,9 @@
             color: var(--text-muted);
             font-size: 0.75rem;
             font-weight: 600;
-            width: 80px;
+            flex: 1; /* Adaptable width for scaling fonts */
+            min-width: 60px;
+            max-width: 100px;
             cursor: pointer;
             transition: color 0.2s, opacity 0.2s;
         }
@@ -487,6 +524,11 @@
             <div>
                 <div class="header-subtitle">Sept 15 - Sept 24</div>
                 <h1 class="header-title">🗽 NY Guide</h1>
+            </div>
+            <!-- Font Size Controls -->
+            <div class="font-controls">
+                <button class="font-btn" onclick="changeFontSize(-2)" aria-label="Achicar tamaño de texto">A−</button>
+                <button class="font-btn" onclick="changeFontSize(2)" aria-label="Agrandar tamaño de texto">A+</button>
             </div>
         </div>
         <div class="day-scroller" id="dayScroller">
@@ -1456,6 +1498,32 @@
     </nav>
 
     <script>
+        // --- LOGICA DE CONTROL DE TAMAÑO DE FUENTE ---
+        let currentFontSize = 16;
+        const MIN_FONT = 12;
+        const MAX_FONT = 26;
+
+        function initFontSize() {
+            const savedSize = localStorage.getItem('ny-font-size');
+            if (savedSize) {
+                currentFontSize = parseInt(savedSize, 10);
+                document.documentElement.style.fontSize = currentFontSize + 'px';
+            }
+        }
+
+        function changeFontSize(delta) {
+            let newSize = currentFontSize + delta;
+            if (newSize >= MIN_FONT && newSize <= MAX_FONT) {
+                currentFontSize = newSize;
+                document.documentElement.style.fontSize = currentFontSize + 'px';
+                localStorage.setItem('ny-font-size', currentFontSize);
+            }
+        }
+
+        // Inicializar tamaño de fuente guardado al cargar
+        initFontSize();
+
+        // --- LOGICA DE NAVEGACION ---
         let currentDay = 'home';
         
         function hideAllViews() {
