@@ -2,665 +2,1243 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de Viaje a Nueva York - 10 Días</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NY Travel Guide Premium</title>
+    <meta name="theme-color" content="#0F172A">
     <style>
         :root {
-            --primary: #1a4b8c;
-            --secondary: #e63946;
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text: #2b2b2b;
-            --text-light: #6c757d;
-            --border: #dee2e6;
-            --accent: #ffb703;
+            /* Premium Palette */
+            --bg-color: #F8FAFC;
+            --surface-color: #FFFFFF;
+            --primary-dark: #0F172A;
+            --primary: #1E293B;
+            --accent: #F59E0B; /* NYC Taxi Gold */
+            --accent-light: #FEF3C7;
+            --text-main: #334155;
+            --text-muted: #64748B;
+            --border-light: #E2E8F0;
+            --link-bg: #EFF6FF;
+            --link-text: #2563EB;
+            
+            /* Spacing & Sizes */
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --nav-height: 85px;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg); color: var(--text); padding-bottom: 70px; line-height: 1.6; }
-        header { background: var(--primary); color: white; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-        header h1 { font-size: 1.2rem; font-weight: 600; margin: 0; flex-grow: 1; text-align: center; }
-        .menu-icon { font-size: 1.5rem; cursor: pointer; color: white; background: none; border: none; padding: 5px; }
-        .container { padding: 20px 15px; max-width: 800px; margin: auto; }
-        .view-section { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .view-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Home View */
-        .home-view { text-align: center; padding: 40px 20px; }
-        .home-view h2 { color: var(--primary); font-size: 2rem; margin-bottom: 10px; }
-        .home-view p { color: var(--text-light); margin-bottom: 30px; font-size: 1.1rem; }
-        .btn-start { background: var(--secondary); color: white; border: none; padding: 15px 30px; font-size: 1.1rem; border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.2s; }
-        .btn-start:hover { transform: scale(1.05); }
 
-        /* Day View */
-        .day-title { font-size: 1.4rem; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 20px; }
-        .time-block { margin-bottom: 30px; }
-        .time-header { font-size: 1.2rem; color: white; background: var(--primary); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-bottom: 15px; font-weight: bold; }
-        
-        .card { background: var(--card-bg); border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--secondary); }
-        .card h4 { font-size: 1.1rem; margin-bottom: 10px; color: var(--primary); }
-        .card p { margin-bottom: 12px; font-size: 1rem; }
-        .card ul, .card ol { padding-left: 20px; margin-bottom: 12px; }
-        .card li { margin-bottom: 5px; }
-        
-        .link-box { display: inline-flex; align-items: center; background: #e8f0fe; color: #1a73e8; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-top: 10px; border: 1px solid #d2e3fc; word-break: break-word; }
-        .link-box::before { content: "📍"; margin-right: 8px; }
-        .link-box:hover { background: #d2e3fc; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .note-card { border-left-color: var(--accent); background: #fffcf2; }
-        
-        /* Navigation Bottom */
-        .nav-bottom { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-        .nav-btn { background: none; border: none; color: var(--text-light); font-size: 0.85rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 5px 15px; }
-        .nav-btn.active { color: var(--primary); font-weight: bold; }
-        .nav-btn.disabled { color: #ccc; cursor: not-allowed; }
-        .nav-icon { font-size: 1.2rem; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 100px; /* Space for bottom nav */
+            overscroll-behavior-y: none;
+        }
 
-        /* Fullscreen Menu */
-        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 200; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
-        .menu-content { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
-        .menu-content h2 { margin-bottom: 20px; text-align: center; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .day-list-btn { display: block; width: 100%; padding: 15px; margin-bottom: 10px; background: #f1f3f5; border: none; border-radius: 8px; font-size: 1rem; text-align: left; cursor: pointer; font-weight: 500; color: var(--text); transition: background 0.2s; }
-        .day-list-btn:hover { background: #e9ecef; }
-        .close-menu { margin-top: 20px; width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        /* --- STICKY TOP NAVIGATION --- */
+        .top-nav-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px 10px;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Horizontal Scroll Day Selector */
+        .day-scroller {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            padding: 10px 20px 16px;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+        
+        .day-scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pill {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            border-radius: 100px;
+            background-color: var(--bg-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            scroll-snap-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .pill.active {
+            background-color: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* --- APP CONTAINER --- */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        /* --- VIEWS --- */
+        .view-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease-out;
+        }
+
+        .view-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: slideFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideFadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HOME VIEW (HERO) --- */
+        .hero-card {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1E3A8A 100%);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .hero-dates {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--primary-dark);
+            border: none;
+            padding: 18px 36px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 100px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        /* --- DAY VIEW & TIMELINE --- */
+        .day-header {
+            margin-bottom: 35px;
+        }
+        
+        .day-headline {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--border-light) 0%, var(--border-light) 80%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        .time-block {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .time-label {
+            position: relative;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .time-label::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            border: 3px solid var(--bg-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px var(--border-light);
+            z-index: 2;
+        }
+
+        /* --- CARDS --- */
+        .card {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            margin-bottom: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .card p, .card li {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .card ul, .card ol {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card li {
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+        
+        .card li::marker {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Highlights / Notes */
+        .card-highlight {
+            background: var(--accent-light);
+            border: none;
+            box-shadow: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-highlight::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--accent);
+        }
+
+        .card-highlight p {
+            color: #92400E;
+            font-weight: 500;
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* --- ACTION LINKS (Google Maps) --- */
+        .action-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background-color: var(--link-bg);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background 0.2s;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .action-link:active {
+            background-color: #DBEAFE;
+        }
+
+        .icon-box {
+            background: #FFFFFF;
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1);
+            flex-shrink: 0;
+        }
+
+        .link-text {
+            color: var(--link-text);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        /* --- BOTTOM TAB BAR --- */
+        .bottom-tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-evenly;
+            padding: 12px 10px 24px; /* Extra bottom padding for iOS safe area */
+            z-index: 100;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.03);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 80px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab-icon {
+            font-size: 1.5rem;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-dark);
+        }
+
+        .tab-btn.active .tab-icon {
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Utilities */
+        .mt-2 { margin-top: 8px; }
+        .mb-4 { margin-bottom: 16px; }
+
+        /* Tablet & Desktop Optimizations */
+        @media (min-width: 768px) {
+            .app-container {
+                padding: 40px;
+            }
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            .day-headline {
+                font-size: 2.5rem;
+            }
+            .card {
+                padding: 32px;
+            }
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            }
+            .action-link:hover {
+                background-color: #DBEAFE;
+            }
+            .pill:hover {
+                background-color: var(--border-light);
+            }
+            .bottom-tab-bar {
+                padding-bottom: 12px;
+                max-width: 800px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 24px 24px 0 0;
+                border: 1px solid var(--border-light);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <button class="menu-icon" onclick="toggleMenu()">☰</button>
-        <h1 id="header-title">Mi Viaje a NY</h1>
-        <div style="width: 28px;"></div>
-    </header>
+    <!-- STICKY TOP HEADER & SCROLLER -->
+    <div class="top-nav-container">
+        <div class="header-main">
+            <div>
+                <div class="header-subtitle">Sept 15 - Sept 24</div>
+                <h1 class="header-title">🗽 NY Guide</h1>
+            </div>
+        </div>
+        <div class="day-scroller" id="dayScroller">
+            <button class="pill active" id="pill-home" onclick="goToDay('home')">Inicio</button>
+            <button class="pill" id="pill-1" onclick="goToDay(1)">Día 1</button>
+            <button class="pill" id="pill-2" onclick="goToDay(2)">Día 2</button>
+            <button class="pill" id="pill-3" onclick="goToDay(3)">Día 3</button>
+            <button class="pill" id="pill-4" onclick="goToDay(4)">Día 4</button>
+            <button class="pill" id="pill-5" onclick="goToDay(5)">Día 5</button>
+            <button class="pill" id="pill-6" onclick="goToDay(6)">Día 6</button>
+            <button class="pill" id="pill-7" onclick="goToDay(7)">Día 7</button>
+            <button class="pill" id="pill-8" onclick="goToDay(8)">Día 8</button>
+            <button class="pill" id="pill-9" onclick="goToDay(9)">Día 9</button>
+            <button class="pill" id="pill-10" onclick="goToDay(10)">Día 10</button>
+        </div>
+    </div>
 
-    <div class="container">
-        <!-- Pantalla de Inicio -->
-        <div id="view-home" class="view-section active home-view">
-            <h2>🗽 Nueva York</h2>
-            <p>10 Días - Guía Interactiva del Viaje</p>
-            <p>15 de Septiembre al 24 de Septiembre</p>
-            <button class="btn-start" onclick="goToDay(1)">Comenzar Aventura</button>
+    <!-- MAIN APP CONTAINER -->
+    <div class="app-container">
+        
+        <!-- PANTALLA DE INICIO -->
+        <div id="view-home" class="view-section active">
+            <div class="hero-card">
+                <h2 class="hero-title">Nueva York</h2>
+                <div class="hero-dates">10 Días de Viaje</div>
+                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; font-weight: 500;">
+                    15 de Septiembre al 24 de Septiembre
+                </p>
+                <button class="btn-primary" onclick="goToDay(1)">
+                    Comenzar Aventura <span>✈️</span>
+                </button>
+            </div>
         </div>
 
         <!-- DÍA 1 -->
         <div id="view-day-1" class="view-section">
-            <h2 class="day-title">DÍA 1: Martes 15 de Septiembre - Llegada (JFK), Compras en New Jersey y Noche en Times Square</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Martes 15 de Septiembre</div>
+                <h2 class="day-headline">Llegada (JFK), Compras en New Jersey y Noche en Times Square</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Arribo y traslado desde el aeropuerto (07:00 AM)</h4>
-                    <p>El trayecto exacto en transporte público toma aproximadamente 1 hora:</p>
-                    <ul>
-                        <li><strong>Air Train JFK:</strong> Al salir de tu terminal, seguí los carteles elevados que dicen Air Train. Subite a la línea en dirección a Estación Jamaica. Al llegar a la estación de Jamaica, vas a pasar por los molinetes donde se abona la tarifa del AirTrain (se puede pagar directamente apoyando tu tarjeta de crédito/débito física o el celular con Apple Pay/Google Wallet gracias al sistema OMNY).</li>
-                        <li><strong>Subway (Línea E):</strong> Desde la misma estación de Jamaica, seguí las indicaciones para conectar con el Metro de Nueva York. Tenés que tomar la Línea E con sentido hacia Manhattan con destino Centro (hacia el centro).</li>
-                        <li><strong>Llegada:</strong> Te bajás en la estación 42 St - Port Authority Bus Terminal. Desde los andenes, salís a la superficie y caminás únicamente dos cuadras hacia el sur por la 9na avenida hasta llegar a la calle W 39th St, donde se encuentra el hotel. Dejan las valijas en custodia en el hotel.</li>
-                    </ul>
-                    <a href="https://maps.google.com/?q=JFK+Airport+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Desde JFK Airport hasta Candlewood Suites via AirTrain y Línea E</a>
+            <div class="timeline">
+                <!-- MAÑANA -->
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Arribo y traslado desde el aeropuerto (07:00 AM)</h4>
+                        <p>El trayecto exacto en transporte público toma aproximadamente 1 hora:</p>
+                        <ul>
+                            <li><strong>Air Train JFK:</strong> Al salir de tu terminal, seguí los carteles elevados que dicen Air Train. Subite a la línea en dirección a Estación Jamaica. Al llegar a la estación de Jamaica, vas a pasar por los molinetes donde se abona la tarifa del AirTrain (se puede pagar directamente apoyando tu tarjeta de crédito/débito física o el celular con Apple Pay/Google Wallet gracias al sistema OMNY).</li>
+                            <li><strong>Subway (Línea E):</strong> Desde la misma estación de Jamaica, seguí las indicaciones para conectar con el Metro de Nueva York. Tenés que tomar la Línea E con sentido hacia Manhattan con destino Centro (hacia el centro).</li>
+                            <li><strong>Llegada:</strong> Te bajás en la estación 42 St - Port Authority Bus Terminal. Desde los andenes, salís a la superficie y caminás únicamente dos cuadras hacia el sur por la 9na avenida hasta llegar a la calle W 39th St, donde se encuentra el hotel. Dejan las valijas en custodia en el hotel.</li>
+                        </ul>
+                        <a href="https://maps.google.com/?q=JFK+Airport+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="action-link">
+                            <div class="icon-box">🗺️</div>
+                            <span class="link-text">Ruta en Google Maps: JFK Airport hasta Candlewood Suites via AirTrain y Línea E</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA / TARDE</div>
-                <div class="card">
-                    <h4>Escapada de compras a New Jersey</h4>
-                    <p>Una vez que dejan las valijas en el hotel, la ida hacia el shopping en New Jersey es súper directa porque les queda al lado de la terminal principal de colectivos. El trayecto toma unos 40 minutos:</p>
-                    <ol>
-                        <li><strong>Caminata a la terminal:</strong> Salen del Candlewood Suites Nueva York - Times Square por IHG y caminan dos cuadras hacia el norte por la 9na avenida hasta ingresar a la Port Authority Bus Terminal.</li>
-                        <li><strong>Compra de pasajes:</strong> Adentro de la terminal, buscan las boleterías automáticas o de atención de Tránsito de Nueva Jersey (Tránsito de Nueva Jersey). Tienen que comprar un pasaje Ida y vuelta (Ida y vuelta) para el colectivo de la Línea 111.</li>
-                        <li><strong>El viaje:</strong> Suben a la plataforma que les indique el boleto para la Línea 111 (empresa Tránsito de Nueva Jersey). Este colectivo va directo por autopista y los deja exactamente en la entrada de The Mills at Jersey Gardens.</li>
-                    </ol>
-                    <a href="https://maps.google.com/?q=Port+Authority+Bus+Terminal+to+The+Mills+at+Jersey+Gardens" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: De Port Authority Bus Terminal a The Mills at Jersey Gardens</a>
+                <!-- MEDIODÍA / TARDE -->
+                <div class="time-block">
+                    <div class="time-label">Mediodía / Tarde</div>
+                    <div class="card">
+                        <h4>Escapada de compras a New Jersey</h4>
+                        <p>Una vez que dejan las valijas en el hotel, la ida hacia el shopping en New Jersey es súper directa porque les queda al lado de la terminal principal de colectivos. El trayecto toma unos 40 minutos:</p>
+                        <ol>
+                            <li><strong>Caminata a la terminal:</strong> Salen del Candlewood Suites Nueva York - Times Square por IHG y caminan dos cuadras hacia el norte por la 9na avenida hasta ingresar a la Port Authority Bus Terminal.</li>
+                            <li><strong>Compra de pasajes:</strong> Adentro de la terminal, buscan las boleterías automáticas o de atención de Tránsito de Nueva Jersey (Tránsito de Nueva Jersey). Tienen que comprar un pasaje Ida y vuelta (Ida y vuelta) para el colectivo de la Línea 111.</li>
+                            <li><strong>El viaje:</strong> Suben a la plataforma que les indique el boleto para la Línea 111 (empresa Tránsito de Nueva Jersey). Este colectivo va directo por autopista y los deja exactamente en la entrada de The Mills at Jersey Gardens.</li>
+                        </ol>
+                        <a href="https://maps.google.com/?q=Port+Authority+Bus+Terminal+to+The+Mills+at+Jersey+Gardens" target="_blank" class="action-link">
+                            <div class="icon-box">🛍️</div>
+                            <span class="link-text">Ruta en Google Maps: Port Authority Bus Terminal a The Mills at Jersey Gardens</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / REGRESO</div>
-                <div class="card">
-                    <h4>Regreso del Shopping y Check-in</h4>
-                    <p>El trayecto de vuelta toma el mismo tiempo (unos 40 minutos):</p>
-                    <ul>
-                        <li><strong>Regreso del Shopping:</strong> Al terminar las compras, salen por la misma puerta donde los dejó el colectivo y toman la Línea 111 de Tránsito de Nueva Jersey en dirección de regreso a Manhattan.</li>
-                        <li><strong>Llegada:</strong> Se bajan en la parada final dentro de Port Authority Bus Terminal.</li>
-                        <li><strong>Registrarse:</strong> Caminan las dos cuadras de vuelta hacia el Candlewood Suites Nueva York - Times Square por IHG. Hacen el ingreso oficial, les dan la llave de la habitación, guardan todas las bolsas de las compras, se pegan una ducha rápida y descansan un rato antes de salir a caminar.</li>
-                    </ul>
-                    <a href="https://maps.google.com/?q=The+Mills+at+Jersey+Gardens+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: De The Mills at Jersey Gardens de regreso al hotel</a>
+                <!-- TARDE / REGRESO -->
+                <div class="time-block">
+                    <div class="time-label">Tarde / Regreso</div>
+                    <div class="card">
+                        <h4>Regreso del Shopping y Check-in</h4>
+                        <p>El trayecto de vuelta toma el mismo tiempo (unos 40 minutos):</p>
+                        <ul>
+                            <li><strong>Regreso del Shopping:</strong> Al terminar las compras, salen por la misma puerta donde los dejó el colectivo y toman la Línea 111 de Tránsito de Nueva Jersey en dirección de regreso a Manhattan.</li>
+                            <li><strong>Llegada:</strong> Se bajan en la parada final dentro de Port Authority Bus Terminal.</li>
+                            <li><strong>Registrarse:</strong> Caminan las dos cuadras de vuelta hacia el Candlewood Suites Nueva York - Times Square por IHG. Hacen el ingreso oficial, les dan la llave de la habitación, guardan todas las bolsas de las compras, se pegan una ducha rápida y descansan un rato antes de salir a caminar.</li>
+                        </ul>
+                        <a href="https://maps.google.com/?q=The+Mills+at+Jersey+Gardens+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="action-link">
+                            <div class="icon-box">🏨</div>
+                            <span class="link-text">Ruta en Google Maps: The Mills at Jersey Gardens de regreso al hotel</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">NOCHE</div>
-                <div class="card">
-                    <h4>Paseo a pie por Times Square y cena</h4>
-                    <p>Todo este bloque final se hace caminando y son distancias muy cortas:</p>
-                    <ol>
-                        <li><strong>Paseo al Atardecer:</strong> Salen del hotel y caminan hacia el noreste unas 4 cuadras. En menos de 10 minutos van a estar parados en el centro de Times Square justo cuando se empiezan a encender todas las pantallas gigantes.
-                            <br><a href="https://maps.google.com/?q=Candlewood+Suites+New+York+Times+Square+to+Times+Square" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Caminar desde el hotel hasta Times Square</a>
-                        </li>
-                        <li><strong>Compra de la Cena:</strong> Cuando tengan hambre, caminan 3 cuadras hacia el este (en dirección a la 6ta Avenida) hasta llegar a Whole Foods Market, justo frente a Parque Bryant. Suben al segundo piso, se arman las bandejas en el buffet caliente por peso (tienen excelentes opciones de comida casera, carnes, pastas y ensaladas) o compran unas porciones de pizza, y pasan por las cajas.
-                            <br><a href="https://maps.google.com/?q=Times+Square+to+Whole+Foods+Market+Bryant+Park" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Caminar desde Times Square hasta Whole Foods Market</a>
-                        </li>
-                        <li><strong>Regreso al Hotel:</strong> Con las bolsas de la cena, caminan unas 4 cuadras rectas de regreso hacia el oeste por la calle W 39th St hasta entrar al hotel para comer cómodos en la suite y descansar. Con esto cerramos de forma impecable y súper logística el Día 1.</li>
-                    </ol>
+                <!-- NOCHE -->
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Paseo a pie por Times Square y cena</h4>
+                        <p>Todo este bloque final se hace caminando y son distancias muy cortas:</p>
+                        <ol>
+                            <li><strong>Paseo al Atardecer:</strong> Salen del hotel y caminan hacia el noreste unas 4 cuadras. En menos de 10 minutos van a estar parados en el centro de Times Square justo cuando se empiezan a encender todas las pantallas gigantes.
+                                <a href="https://maps.google.com/?q=Candlewood+Suites+New+York+Times+Square+to+Times+Square" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🚶</div>
+                                    <span class="link-text">Ruta en Google Maps: Caminar desde el hotel hasta Times Square</span>
+                                </a>
+                            </li>
+                            <li><strong>Compra de la Cena:</strong> Cuando tengan hambre, caminan 3 cuadras hacia el este (en dirección a la 6ta Avenida) hasta llegar a Whole Foods Market, justo frente a Parque Bryant. Suben al segundo piso, se arman las bandejas en el buffet caliente por peso (tienen excelentes opciones de comida casera, carnes, pastas y ensaladas) o compran unas porciones de pizza, y pasan por las cajas.
+                                <a href="https://maps.google.com/?q=Times+Square+to+Whole+Foods+Market+Bryant+Park" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🍕</div>
+                                    <span class="link-text">Ruta en Google Maps: Caminar desde Times Square hasta Whole Foods Market</span>
+                                </a>
+                            </li>
+                            <li><strong>Regreso al Hotel:</strong> Con las bolsas de la cena, caminan unas 4 cuadras rectas de regreso hacia el oeste por la calle W 39th St hasta entrar al hotel para comer cómodos en la suite y descansar. Con esto cerramos de forma impecable y súper logística el Día 1.</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 2 -->
         <div id="view-day-2" class="view-section">
-            <h2 class="day-title">DÍA 2: Miércoles 16 de Septiembre - Bajo Manhattan, Liberty Island y Distrito Financiero</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Miércoles 16 de Septiembre</div>
+                <h2 class="day-headline">Bajo Manhattan, Liberty Island y Distrito Financiero</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Early Ferry & Liberty Island</h4>
-                    <ul>
-                        <li><strong>07:30 AM - Viaje hacia el muelle:</strong> Salen del hotel y caminan 4 cuadras hacia el este por W 39th St hasta la Estación Times Square-42 St. Ahí toman el Metro (Línea 1 color rojo, con sentido Ferry Centro / Sur) y bajan en la última parada, South Ferry Terminal. Al salir de la estación, están directamente en Battery Park.
-                            <br><a href="https://maps.google.com/?q=Candlewood+Suites+to+Times+Square-42+St+Station" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Caminata de Candlewood Suites a Times Square-42 St Station</a>
-                        </li>
-                        <li><strong>08:00 AM - PASE ATRACCIÓN 1:</strong> Llegan a Statue City Cruises Battery Park en Battery Park para pasar el control de seguridad y subir al primer barco hacia Isla de la Libertad y Isla Ellis. Esto les evita las filas masivas del mediodía.</li>
-                        <li><strong>11:30 AM - Regreso:</strong> El ferry los deja de regreso en Battery Park.</li>
-                    </ul>
+            <div class="timeline">
+                <!-- MAÑANA -->
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Early Ferry & Liberty Island</h4>
+                        <ul>
+                            <li><strong>07:30 AM - Viaje hacia el muelle:</strong> Salen del hotel y caminan 4 cuadras hacia el este por W 39th St hasta la Estación Times Square-42 St. Ahí toman el Metro (Línea 1 color rojo, con sentido Ferry Centro / Sur) y bajan en la última parada, South Ferry Terminal. Al salir de la estación, están directamente en Battery Park.
+                                <a href="https://maps.google.com/?q=Candlewood+Suites+to+Times+Square-42+St+Station" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Ruta: Caminata de Candlewood Suites a Times Square-42 St Station</span>
+                                </a>
+                            </li>
+                            <li><strong>08:00 AM - PASE ATRACCIÓN 1:</strong> Llegan a Statue City Cruises Battery Park en Battery Park para pasar el control de seguridad y subir al primer barco hacia Isla de la Libertad y Isla Ellis. Esto les evita las filas masivas del mediodía.</li>
+                            <li><strong>11:30 AM - Regreso:</strong> El ferry los deja de regreso en Battery Park.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA</div>
-                <div class="card">
-                    <h4>Surprise Attraction & Lunch</h4>
-                    <ul>
-                        <li><strong>12:00 PM - PASE ATRACCIÓN 2 (Optimización Sorpresa):</strong> Caminan unas pocas cuadras desde el muelle hacia Museo Taberna Fraunces. Recorren este histórico edificio de 1762 clave en la independencia americana.</li>
-                        <li><strong>01:00 PM - Almuerzo:</strong> Almuerzan algo rápido al paso por la zona del Distrito financiero para llegar con tiempo al punto de encuentro.
-                            <br><a href="https://maps.google.com/?q=Battery+Park+to+Fraunces+Tavern+Museum" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Caminata desde Battery Park a Fraunces Tavern Museum</a>
-                        </li>
-                    </ul>
+                <!-- MEDIODÍA -->
+                <div class="time-block">
+                    <div class="time-label">Mediodía</div>
+                    <div class="card">
+                        <h4>Surprise Attraction & Lunch</h4>
+                        <ul>
+                            <li><strong>12:00 PM - PASE ATRACCIÓN 2 (Optimización Sorpresa):</strong> Caminan unas pocas cuadras desde el muelle hacia Museo Taberna Fraunces. Recorren este histórico edificio de 1762 clave en la independencia americana.</li>
+                            <li><strong>01:00 PM - Almuerzo:</strong> Almuerzan algo rápido al paso por la zona del Distrito financiero para llegar con tiempo al punto de encuentro.
+                                <a href="https://maps.google.com/?q=Battery+Park+to+Fraunces+Tavern+Museum" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🍔</div>
+                                    <span class="link-text">Ruta: Caminata desde Battery Park a Fraunces Tavern Museum</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Free Tour de Civitatis y Zona Cero</h4>
-                    <ul>
-                        <li><strong>02:00 PM - CIVITATIS FREE TOUR (Prioridad):</strong> Inician el tour guiado a pie por el distrito financiero. Durante el circuito van a recorrer e interactuar con puntos icónicos como el Charging Bull, Bolsa de Nueva York (Bolsa de Nueva York) y el Salón Federal.</li>
-                        <li><strong>04:00 PM - Arquitectura:</strong> El tour finaliza cerca de El Oculus, donde aprovechan para conocer la impresionante estructura diseñada por Calatrava por dentro y por fuera.</li>
-                        <li><strong>04:30 PM - PASE ATRACCIÓN 3:</strong> Entran directamente a recorrer el Museo y Memorial del 11 de septiembre, visitando las piletas exteriores del homenaje y las impactantes exhibiciones subterráneas.</li>
-                    </ul>
+                <!-- TARDE -->
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Free Tour de Civitatis y Zona Cero</h4>
+                        <ul>
+                            <li><strong>02:00 PM - CIVITATIS FREE TOUR (Prioridad):</strong> Inician el tour guiado a pie por el distrito financiero. Durante el circuito van a recorrer e interactuar con puntos icónicos como el Charging Bull, Bolsa de Nueva York (Bolsa de Nueva York) y el Salón Federal.</li>
+                            <li><strong>04:00 PM - Arquitectura:</strong> El tour finaliza cerca de El Oculus, donde aprovechan para conocer la impresionante estructura diseñada por Calatrava por dentro y por fuera.</li>
+                            <li><strong>04:30 PM - PASE ATRACCIÓN 3:</strong> Entran directamente a recorrer el Museo y Memorial del 11 de septiembre, visitando las piletas exteriores del homenaje y las impactantes exhibiciones subterráneas.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">ATARDECER / NOCHE</div>
-                <div class="card">
-                    <h4>High View & Dinner</h4>
-                    <ul>
-                        <li><strong>06:30 PM - PASE ATRACCIÓN 4:</strong> Cruzan directo al edificio de al lado para subir a One World Observarory, el mirador más alto de la zona, justo a la hora del atardecer para ver cómo se encienden las luces de Manhattan, Brooklyn y el río.</li>
-                        <li><strong>20:30 - Precio:</strong> Cenan algo en los alrededores del World Trade Center antes de tomar el Metro de regreso al hotel.</li>
-                        <li><strong>Regreso al Hotel:</strong> Ingresan a la estación Estación del World Trade Center, toman la Línea E (Zona residencial) hasta 42 St - Port Autority Bus Terminal. Salen y caminan las dos cuadras correspondientes hasta el hotel.
-                            <br><a href="https://maps.google.com/?q=World+Trade+Center+to+Candlewood+Suites+via+Line+E" target="_blank" class="link-box">Enlace directo de ruta en Google Maps: Regreso desde World Trade Center hasta Candlewood Suites via Line E</a>
-                        </li>
-                    </ul>
+                <!-- ATARDECER / NOCHE -->
+                <div class="time-block">
+                    <div class="time-label">Atardecer / Noche</div>
+                    <div class="card">
+                        <h4>High View & Dinner</h4>
+                        <ul>
+                            <li><strong>06:30 PM - PASE ATRACCIÓN 4:</strong> Cruzan directo al edificio de al lado para subir a One World Observarory, el mirador más alto de la zona, justo a la hora del atardecer para ver cómo se encienden las luces de Manhattan, Brooklyn y el río.</li>
+                            <li><strong>20:30 - Cena:</strong> Cenan algo en los alrededores del World Trade Center antes de tomar el Metro de regreso al hotel.</li>
+                            <li><strong>Regreso al Hotel:</strong> Ingresan a la estación Estación del World Trade Center, toman la Línea E (Zona residencial) hasta 42 St - Port Autority Bus Terminal. Salen y caminan las dos cuadras correspondientes hasta el hotel.
+                                <a href="https://maps.google.com/?q=World+Trade+Center+to+Candlewood+Suites+via+Line+E" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Ruta: Regreso desde World Trade Center hasta Candlewood Suites via Line E</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 3 -->
         <div id="view-day-3" class="view-section">
-            <h2 class="day-title">DÍA 3: Jueves 17 de Septiembre – Midtown Manhattan Ultra Pass Optimization (Día 2 del New York Pass)</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Jueves 17 de Septiembre</div>
+                <h2 class="day-headline">Midtown Manhattan Ultra Pass Optimization (Día 2 NY Pass)</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>El eje de la 5th Avenue (Norte a Sur)</h4>
-                    <ul>
-                        <li><strong>08:15 AM - Desayuno:</strong> Compran para llevar en Ess-a-Bagel.</li>
-                        <li><strong>09:00 AM - ATRACCIÓN DEL PASE 1:</strong> Suben a Top off The Rock en el primer turno de la mañana.
-                            <br><a href="https://maps.google.com/?q=Hotel+to+Top+of+the+Rock" target="_blank" class="link-box">Enlace de ruta en Google Maps: Del Hotel a Top of the Rock caminando (Son unas 13 cuadras tranquilas hacia el noreste)</a>
-                        </li>
-                        <li><strong>10:15 AM - ATRACCIÓN DEL PASE 2:</strong> Salen y caminan solo dos cuadras hacia el norte por 5ta avenida hasta ingresar a El Museo de Arte Moderno (MoMA).
-                            <br><a href="https://maps.google.com/?q=Top+of+the+Rock+to+MoMA" target="_blank" class="link-box">Enlace de ruta en Google Maps: De Top of the Rock a MoMA caminando</a>
-                        </li>
-                        <li><strong>12:15 PM - ATRACCIÓN DEL PASE 3:</strong> Caminan en línea recta hacia el sur por 5ta avenida hasta ingresar al Edificio Empire State.
-                            <br><a href="https://maps.google.com/?q=MoMA+to+Empire+State+Building" target="_blank" class="link-box">Enlace de ruta en Google Maps: De MoMA a Empire State Building caminando</a>
-                        </li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>El eje de la 5th Avenue (Norte a Sur)</h4>
+                        <ul>
+                            <li><strong>08:15 AM - Desayuno:</strong> Compran para llevar en Ess-a-Bagel.</li>
+                            <li><strong>09:00 AM - ATRACCIÓN DEL PASE 1:</strong> Suben a Top off The Rock en el primer turno de la mañana.
+                                <a href="https://maps.google.com/?q=Hotel+to+Top+of+the+Rock" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">📸</div>
+                                    <span class="link-text">Del Hotel a Top of the Rock caminando (13 cuadras)</span>
+                                </a>
+                            </li>
+                            <li><strong>10:15 AM - ATRACCIÓN DEL PASE 2:</strong> Salen y caminan solo dos cuadras hacia el norte por 5ta avenida hasta ingresar a El Museo de Arte Moderno (MoMA).
+                                <a href="https://maps.google.com/?q=Top+of+the+Rock+to+MoMA" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🎨</div>
+                                    <span class="link-text">De Top of the Rock a MoMA caminando</span>
+                                </a>
+                            </li>
+                            <li><strong>12:15 PM - ATRACCIÓN DEL PASE 3:</strong> Caminan en línea recta hacia el sur por 5ta avenida hasta ingresar al Edificio Empire State.
+                                <a href="https://maps.google.com/?q=MoMA+to+Empire+State+Building" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🏙️</div>
+                                    <span class="link-text">De MoMA a Empire State Building caminando</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">ALMUERZO</div>
-                <div class="card">
-                    <h4>Hacia Times Square</h4>
-                    <ul>
-                        <li><strong>02:00 PM - Almuerzo:</strong> Caminan desde el mirador hacia el noroeste en dirección a Times Square para comer en Los Tacos No. 1 - Times Square.
-                            <br><a href="https://maps.google.com/?q=Empire+State+Building+to+Los+Tacos+No+1" target="_blank" class="link-box">Enlace de ruta en Google Maps: De Empire State Building a Los Tacos No. 1 caminando</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Almuerzo</div>
+                    <div class="card">
+                        <h4>Hacia Times Square</h4>
+                        <ul>
+                            <li><strong>02:00 PM - Almuerzo:</strong> Caminan desde el mirador hacia el noroeste en dirección a Times Square para comer en Los Tacos No. 1 - Times Square.
+                                <a href="https://maps.google.com/?q=Empire+State+Building+to+Los+Tacos+No+1" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🌮</div>
+                                    <span class="link-text">De Empire State Building a Los Tacos No. 1 caminando</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Entretenimiento en Times Square y viaje al extremo Oeste</h4>
-                    <ul>
-                        <li><strong>02:45 PM - ATRACCIÓN DEL PASE 4:</strong> Caminan una cuadra hasta ingresar a Madame Tussauds Nueva York.</li>
-                        <li><strong>04:00 PM - ATRACCIÓN DEL PASE 5:</strong> Caminan solo unos pasos a la vuelta por la misma cuadra para entrar a RiseNY y hacer el simulador de vuelo virtual sobre la ciudad.
-                            <br><a href="https://maps.google.com/?q=Los+Tacos+No+1+to+Madame+Tussauds+and+RiseNY" target="_blank" class="link-box">Enlace de ruta en Google Maps: De Los Tacos No. 1 a Madame Tussauds y RiseNY caminando</a>
-                        </li>
-                        <li><strong>05:45 PM - ATRACCIÓN DEL PASE 6:</strong> Caminan a la estación Estación Times Square-42 St y toman la Línea 7 (Dirección Yardas Hudson) hasta la última parada en 34 Estación St-Hudson Yards para subir directo a ver el atardecer en The Edge.
-                            <br><a href="https://maps.google.com/?q=RiseNY+to+Edge+via+Line+7" target="_blank" class="link-box">Enlace de ruta en Google Maps: De RiseNY a Edge via Line 7</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Entretenimiento en Times Square y viaje al extremo Oeste</h4>
+                        <ul>
+                            <li><strong>02:45 PM - ATRACCIÓN DEL PASE 4:</strong> Caminan una cuadra hasta ingresar a Madame Tussauds Nueva York.</li>
+                            <li><strong>04:00 PM - ATRACCIÓN DEL PASE 5:</strong> Caminan solo unos pasos a la vuelta por la misma cuadra para entrar a RiseNY y hacer el simulador de vuelo virtual sobre la ciudad.
+                                <a href="https://maps.google.com/?q=Los+Tacos+No+1+to+Madame+Tussauds+and+RiseNY" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🚶</div>
+                                    <span class="link-text">De Los Tacos No. 1 a Madame Tussauds y RiseNY caminando</span>
+                                </a>
+                            </li>
+                            <li><strong>05:45 PM - ATRACCIÓN DEL PASE 6:</strong> Caminan a la estación Estación Times Square-42 St y toman la Línea 7 (Dirección Yardas Hudson) hasta la última parada en 34 Estación St-Hudson Yards para subir directo a ver el atardecer en The Edge.
+                                <a href="https://maps.google.com/?q=RiseNY+to+Edge+via+Line+7" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🌇</div>
+                                    <span class="link-text">De RiseNY a Edge via Line 7</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">NOCHE</div>
-                <div class="card">
-                    <h4>Cena y regreso</h4>
-                    <ul>
-                        <li><strong>20:00 - Precio:</strong> Vuelven a tomar la Línea 7 hacia el este por dos paradas hasta Estación Times Square-42 St para cenar en Restaurante y panadería Junior.
-                            <br><a href="https://maps.google.com/?q=The+Edge+to+Junior+Restaurant+via+Line+7" target="_blank" class="link-box">Enlace de ruta en Google Maps: The Edge a Junior's Restaurant via Line 7</a>
-                        </li>
-                        <li><strong>Regreso al Hotel:</strong> Caminan unas 6 cuadras hacia el suroeste de regreso a Candlewood Suites Nueva York - Times Square por IHG.</li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Cena y regreso</h4>
+                        <ul>
+                            <li><strong>20:00 - Cena:</strong> Vuelven a tomar la Línea 7 hacia el este por dos paradas hasta Estación Times Square-42 St para cenar en Restaurante y panadería Junior.
+                                <a href="https://maps.google.com/?q=The+Edge+to+Junior+Restaurant+via+Line+7" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🍰</div>
+                                    <span class="link-text">The Edge a Junior's Restaurant via Line 7</span>
+                                </a>
+                            </li>
+                            <li><strong>Regreso al Hotel:</strong> Caminan unas 6 cuadras hacia el suroeste de regreso a Candlewood Suites Nueva York - Times Square por IHG.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 4 -->
         <div id="view-day-4" class="view-section">
-            <h2 class="day-title">DÍA 4: Viernes 18 de Septiembre - Upper East Side Museums, Central Park & New York Illuminated Tour</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Viernes 18 de Septiembre</div>
+                <h2 class="day-headline">Upper East Side Museums, Central Park & New York Illuminated Tour</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>5th Avenue Museums</h4>
-                    <ul>
-                        <li><strong>08:30 AM - Travel Uptown:</strong> Desde el hotel, caminan a la estación Times Sq - 42 St Station, toman la N Line, Q Line o R Line hasta Lexington Av/59 St Station, combinan ahí mismo con la 4 Line, 5 Line o 6 Line (Uptown) hasta 86 St Station y caminan hacia 5th Avenue.
-                            <br><a href="https://maps.google.com/?q=Hotel+to+Solomon+R+Guggenheim+Museum+via+Subway" target="_blank" class="link-box">Enlace de ruta en Google Maps: Hotel to Solomon R. Guggenheim Museum via Subway</a>
-                        </li>
-                        <li><strong>09:30 AM - ATTRACTION PASS 1:</strong> Entran al Solomon R. Guggenheim Museum. Se recorre rápido bajando por su famosa rampa espiral.</li>
-                        <li><strong>11:00 AM - ATTRACTION PASS 2:</strong> Al salir, caminan hacia el sur por 5th Avenue hasta ingresar a The Metropolitan Museum of Art (The Met).</li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>5th Avenue Museums</h4>
+                        <ul>
+                            <li><strong>08:30 AM - Travel Uptown:</strong> Desde el hotel, caminan a la estación Times Sq - 42 St Station, toman la N Line, Q Line o R Line hasta Lexington Av/59 St Station, combinan ahí mismo con la 4 Line, 5 Line o 6 Line (Uptown) hasta 86 St Station y caminan hacia 5th Avenue.
+                                <a href="https://maps.google.com/?q=Hotel+to+Solomon+R+Guggenheim+Museum+via+Subway" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Hotel to Solomon R. Guggenheim Museum via Subway</span>
+                                </a>
+                            </li>
+                            <li><strong>09:30 AM - ATTRACTION PASS 1:</strong> Entran al Solomon R. Guggenheim Museum. Se recorre rápido bajando por su famosa rampa espiral.</li>
+                            <li><strong>11:00 AM - ATTRACTION PASS 2:</strong> Al salir, caminan hacia el sur por 5th Avenue hasta ingresar a The Metropolitan Museum of Art (The Met).</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA</div>
-                <div class="card">
-                    <h4>Lunch & Self-Guided Walk through Central Park</h4>
-                    <ul>
-                        <li><strong>01:15 PM - Lunch:</strong> Compran algo al paso en los carritos de comida de la calle o en The Halal Guys y hacen un picnic rápido en el pasto.</li>
-                        <li><strong>01:45 PM - Central Park Walking Tour:</strong> Entran a Central Park justo detrás de The Met. Inician el recorrido cruzando de este a oeste hacia la zona norte-centro. Caminan viendo puntos espectaculares como Obelisk (Cleopatra's Needle), bordean The Great Lawn, bajan hacia el hermoso Belvedere Castle, pasan por The Lake, cruzan el icónico Bow Bridge y finalizan en Strawberry Fields. Salen del parque hacia Central Park West a la altura de W 72nd St.
-                            <br><a href="https://maps.google.com/?q=Central+Park+Walking+Tour+The+Met+to+Strawberry+Fields" target="_blank" class="link-box">Enlace de ruta en Google Maps: Central Park Walking Tour (The Met to Strawberry Fields)</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Mediodía</div>
+                    <div class="card">
+                        <h4>Lunch & Self-Guided Walk through Central Park</h4>
+                        <ul>
+                            <li><strong>01:15 PM - Lunch:</strong> Compran algo al paso en los carritos de comida de la calle o en The Halal Guys y hacen un picnic rápido en el pasto.</li>
+                            <li><strong>01:45 PM - Central Park Walking Tour:</strong> Entran a Central Park justo detrás de The Met. Inician el recorrido cruzando de este a oeste hacia la zona norte-centro. Caminan viendo puntos espectaculares como Obelisk (Cleopatra's Needle), bordean The Great Lawn, bajan hacia el hermoso Belvedere Castle, pasan por The Lake, cruzan el icónico Bow Bridge y finalizan en Strawberry Fields. Salen del parque hacia Central Park West a la altura de W 72nd St.
+                                <a href="https://maps.google.com/?q=Central+Park+Walking+Tour+The+Met+to+Strawberry+Fields" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🌳</div>
+                                    <span class="link-text">Central Park Walking Tour (The Met to Strawberry Fields)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Upper West Side & Museums</h4>
-                    <ul>
-                        <li><strong>02:45 PM - ATTRACTION PASS 3:</strong> Desde W 72nd St, caminan unas cuadras hacia el norte por Central Park West hasta ingresar al American Museum of Natural History para visitar la sala de dinosaurios.</li>
-                        <li><strong>05:30 PM - ATTRACTION PASS 4:</strong> Al salir, caminan solo unos pasos hasta la puerta de al lado para entrar a la New-York Historical Society, incluida en el pase, para aprovechar la última hora con las colecciones de arte y la historia de la ciudad.</li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Upper West Side & Museums</h4>
+                        <ul>
+                            <li><strong>02:45 PM - ATTRACTION PASS 3:</strong> Desde W 72nd St, caminan unas cuadras hacia el norte por Central Park West hasta ingresar al American Museum of Natural History para visitar la sala de dinosaurios.</li>
+                            <li><strong>05:30 PM - ATTRACTION PASS 4:</strong> Al salir, caminan solo unos pasos hasta la puerta de al lado para entrar a la New-York Historical Society, incluida en el pase, para aprovechar la última hora con las colecciones de arte y la historia de la ciudad.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">NOCHE</div>
-                <div class="card">
-                    <h4>"New York Illuminated" Walking Tour (Starting at 07:30 PM)</h4>
-                    <p>Desde la New-York Historical Society, bajan caminando unas 10 cuadras hacia el sur por Central Park West (o toman la A Line, B Line o C Line en 81 St Station hasta 59 St - Columbus Circle Station y caminan al Lincoln Center) para iniciar el circuito nocturno:</p>
-                    <ul>
-                        <li><strong>Point 1: Lincoln Center for the Performing Arts (07:30 PM):</strong> Disfrutan de las fuentes iluminadas y la icónica plaza de los teatros.</li>
-                        <li><strong>Point 2: Columbus Circle:</strong> Desde Lincoln Center, caminan hacia el sureste por Broadway durante unas 4 cuadras hasta llegar a la famosa rotonda iluminada en la esquina suroeste de Central Park.</li>
-                        <li><strong>Point 3: Carnegie Hall:</strong> Desde Columbus Circle, caminan hacia el este por W 57th St durante 3 cuadras largas hasta la esquina de 7th Ave para ver la fachada de este mítico teatro.</li>
-                        <li><strong>Point 4: The Plaza Hotel:</strong> Siguen caminando 2 cuadras más hacia el este por la misma W 57th St hasta 5th Ave, y bajan una cuadra por la avenida hasta la intersección con Central Park South para ver el hotel iluminado.</li>
-                        <li><strong>Point 5: Rockefeller Center:</strong> Desde The Plaza Hotel, caminan en línea recta hacia el sur por toda 5th Avenue durante unas 6 cuadras hasta W 49th St para ver el complejo iluminado.</li>
-                        <li><strong>Point 6 (Final): Radio City Music Hall:</strong> Desde los árboles del Rockefeller Center, cruzan hacia el oeste por W 50th St solo una cuadra hasta 6th Ave para ver el gigantesco cartel de neón brillante.
-                            <br><a href="https://maps.google.com/?q=New+York+Illuminated+Walking+Tour" target="_blank" class="link-box">Enlace de ruta en Google Maps: Complete "New York Illuminated" Walking Tour (Lincoln Center to Radio City Music Hall)</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>"New York Illuminated" Walking Tour (07:30 PM)</h4>
+                        <p>Desde la New-York Historical Society, bajan caminando unas 10 cuadras hacia el sur por Central Park West (o toman la A Line, B Line o C Line en 81 St Station hasta 59 St - Columbus Circle Station y caminan al Lincoln Center) para iniciar el circuito nocturno:</p>
+                        <ul>
+                            <li><strong>Point 1: Lincoln Center for the Performing Arts (07:30 PM):</strong> Disfrutan de las fuentes iluminadas y la icónica plaza de los teatros.</li>
+                            <li><strong>Point 2: Columbus Circle:</strong> Desde Lincoln Center, caminan hacia el sureste por Broadway durante unas 4 cuadras hasta llegar a la famosa rotonda iluminada en la esquina suroeste de Central Park.</li>
+                            <li><strong>Point 3: Carnegie Hall:</strong> Desde Columbus Circle, caminan hacia el este por W 57th St durante 3 cuadras largas hasta la esquina de 7th Ave para ver la fachada de este mítico teatro.</li>
+                            <li><strong>Point 4: The Plaza Hotel:</strong> Siguen caminando 2 cuadras más hacia el este por la misma W 57th St hasta 5th Ave, y bajan una cuadra por la avenida hasta la intersección con Central Park South para ver el hotel iluminado.</li>
+                            <li><strong>Point 5: Rockefeller Center:</strong> Desde The Plaza Hotel, caminan en línea recta hacia el sur por toda 5th Avenue durante unas 6 cuadras hasta W 49th St para ver el complejo iluminado.</li>
+                            <li><strong>Point 6 (Final): Radio City Music Hall:</strong> Desde los árboles del Rockefeller Center, cruzan hacia el oeste por W 50th St solo una cuadra hasta 6th Ave para ver el gigantesco cartel de neón brillante.
+                                <a href="https://maps.google.com/?q=New+York+Illuminated+Walking+Tour" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">✨</div>
+                                    <span class="link-text">Complete "New York Illuminated" Walking Tour</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     
-                    <h4 style="margin-top: 15px;">DINNER & RETURN TO HOTEL:</h4>
-                    <ul>
-                        <li><strong>08:45 PM - Dinner on the way:</strong> Terminando en Radio City Music Hall, caminan hacia el sur en dirección a su hotel. Para comer de camino al alojamiento, tienen un local de Shake Shack - Theater District (en 44th St & 8th Ave) o un Los Tacos No. 1 (en 43rd St entre 7th Ave & 8th Ave) que les quedan perfectamente sobre la ruta de bajada a pie.</li>
-                        <li><strong>Return to Hotel:</strong> Terminan de cenar y caminan las pocas cuadras restantes hasta llegar a Candlewood Suites New York City - Times Square, an IHG Hotel (W 39th St entre 8th Ave & 9th Ave) para descansar.
-                            <br><a href="https://maps.google.com/?q=Radio+City+Music+Hall+to+Hotel+via+Dinner" target="_blank" class="link-box">Enlace de ruta en Google Maps: Final Walk from Radio City Music Hall to Hotel via Dinner Area</a>
-                        </li>
-                    </ul>
+                    <div class="card mt-2">
+                        <h4>DINNER & RETURN TO HOTEL</h4>
+                        <ul>
+                            <li><strong>08:45 PM - Dinner on the way:</strong> Terminando en Radio City Music Hall, caminan hacia el sur en dirección a su hotel. Para comer de camino al alojamiento, tienen un local de Shake Shack - Theater District (en 44th St & 8th Ave) o un Los Tacos No. 1 (en 43rd St entre 7th Ave & 8th Ave) que les quedan perfectamente sobre la ruta de bajada a pie.</li>
+                            <li><strong>Return to Hotel:</strong> Terminan de cenar y caminan las pocas cuadras restantes hasta llegar a Candlewood Suites New York City - Times Square, an IHG Hotel (W 39th St entre 8th Ave & 9th Ave) para descansar.
+                                <a href="https://maps.google.com/?q=Radio+City+Music+Hall+to+Hotel+via+Dinner" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🛌</div>
+                                    <span class="link-text">Final Walk from Radio City Music Hall to Hotel via Dinner Area</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 5 -->
         <div id="view-day-5" class="view-section">
-            <h2 class="day-title">DÍA 5: Sábado 19 de Septiembre - Hudson Yards, High Line, Chelsea, Greenwich Village, SoHo & TriBeCa</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Sábado 19 de Septiembre</div>
+                <h2 class="day-headline">Hudson Yards, High Line, Chelsea, Greenwich Village, SoHo & TriBeCa</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Hudson Yards, The Vessel & Mercado Little Spain</h4>
-                    <ul>
-                        <li><strong>09:00 AM - Llegada a Hudson Yards:</strong> Salen caminando o en metro (7 linea) hasta la estación 34 Estación St-Hudson Yards.</li>
-                        <li><strong>09:15 AM - Recorrido por Hudson Yards:</strong> Admiran la arquitectura de El barco, el cobertizo y pasean por Plaza Pública y Jardines.</li>
-                        <li><strong>10:15 AM - Mercado Little Spain:</strong> Ingresan a Mercado Little Spain ubicado en la planta baja de 10 yardas Hudson para recorrer sus puestos gastronómicos tradicionales y tomar un café o snack.
-                            <br><a href="https://maps.google.com/?q=Hotel+to+Hudson+Yards+The+Vessel+Little+Spain" target="_blank" class="link-box">Enlace de ruta en Google Maps: Del Hotel a Hudson Yards, The Vessel y Mercado Little Spain</a>
-                        </li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Hudson Yards, The Vessel & Mercado Little Spain</h4>
+                        <ul>
+                            <li><strong>09:00 AM - Llegada a Hudson Yards:</strong> Salen caminando o en metro (7 linea) hasta la estación 34 Estación St-Hudson Yards.</li>
+                            <li><strong>09:15 AM - Recorrido por Hudson Yards:</strong> Admiran la arquitectura de El barco, el cobertizo y pasean por Plaza Pública y Jardines.</li>
+                            <li><strong>10:15 AM - Mercado Little Spain:</strong> Ingresan a Mercado Little Spain ubicado en la planta baja de 10 yardas Hudson para recorrer sus puestos gastronómicos tradicionales y tomar un café o snack.
+                                <a href="https://maps.google.com/?q=Hotel+to+Hudson+Yards+The+Vessel+Little+Spain" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">☕</div>
+                                    <span class="link-text">Del Hotel a Hudson Yards, The Vessel y Mercado Little Spain</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA</div>
-                <div class="card">
-                    <h4>High Line, Chelsea Market & Piers Emblemáticos</h4>
-                    <ul>
-                        <li><strong>11:15 AM - Caminata por High Line:</strong> Acceden al parque elevado Línea alta desde la entrada de 30th St & 10th Ave en dirección al sur, disfrutando del arte al aire libre y la vegetación urbana.</li>
-                        <li><strong>12:15 PM - Recorrido y Almuerzo en Chelsea Market:</strong> Descienden a la altura de 15th St para ingresar al histórico Mercado de Chelsea. Opciones populares para almorzar: Los Tacos No. 1 el El lugar de la langosta.</li>
-                        <li><strong>01:30 PM - Perlita 1 (Pier 57 & Rooftop Park):</strong> Salen de Chelsea Market y cruzan a Muelle 57, un muelle restaurado que cuenta con Mercado 57 y un parque en la terraza (Parque en la azotea del muelle 57) con vistas panorámicas de Lower Manhattan y Hudson River.</li>
-                        <li><strong>02:15 PM - Perlita 2 (Little Island en Pier 55):</strong> Caminan dos minutos al sur hacia pequeña isla, el famoso parque flotante apoyado sobre estructuras de hormigón en forma de tulipán.</li>
-                        <li><strong>03:00 PM - Meatpacking District y Perlita 3 (Muelle 54):</strong> Cruzan brevemente por Distrito empacador de carne y pasan por la entrada histórica del antiguo muelle del Titanic en Muelle 54.
-                            <br><a href="https://maps.google.com/?q=High+Line+Chelsea+Market+Pier+57+Little+Island+Meatpacking" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido a pie por High Line, Chelsea Market, Pier 57, Little Island y Meatpacking District</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Mediodía</div>
+                    <div class="card">
+                        <h4>High Line, Chelsea Market & Piers Emblemáticos</h4>
+                        <ul>
+                            <li><strong>11:15 AM - Caminata por High Line:</strong> Acceden al parque elevado Línea alta desde la entrada de 30th St & 10th Ave en dirección al sur, disfrutando del arte al aire libre y la vegetación urbana.</li>
+                            <li><strong>12:15 PM - Recorrido y Almuerzo en Chelsea Market:</strong> Descienden a la altura de 15th St para ingresar al histórico Mercado de Chelsea. Opciones populares para almorzar: Los Tacos No. 1 el El lugar de la langosta.</li>
+                            <li><strong>01:30 PM - Perlita 1 (Pier 57 & Rooftop Park):</strong> Salen de Chelsea Market y cruzan a Muelle 57, un muelle restaurado que cuenta con Mercado 57 y un parque en la terraza (Parque en la azotea del muelle 57) con vistas panorámicas de Lower Manhattan y Hudson River.</li>
+                            <li><strong>02:15 PM - Perlita 2 (Little Island en Pier 55):</strong> Caminan dos minutos al sur hacia pequeña isla, el famoso parque flotante apoyado sobre estructuras de hormigón en forma de tulipán.</li>
+                            <li><strong>03:00 PM - Meatpacking District y Perlita 3 (Muelle 54):</strong> Cruzan brevemente por Distrito empacador de carne y pasan por la entrada histórica del antiguo muelle del Titanic en Muelle 54.
+                                <a href="https://maps.google.com/?q=High+Line+Chelsea+Market+Pier+57+Little+Island+Meatpacking" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚢</div>
+                                    <span class="link-text">Recorrido a pie por High Line, Chelsea Market, Piers y Meatpacking</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Greenwich Village, SoHo & Sus Perlitas</h4>
-                    <ul>
-                        <li><strong>03:45 PM - Inmersión en Greenwich Village:</strong> Ingresan a las calles arboladas de West Village.
-                            <ul>
-                                <li><strong>Perlita 4 (Apartamento Amigos):</strong> Parada fotográfica en Bedford St & Grove St para ver la fachada del edificio de Amigos.</li>
-                                <li><strong>Perlita 5 (La casa de Carrie Bradshaw):</strong> Visitan la fachada de la casa de Sexo y la ciudad en Calle Perry 66.</li>
-                                <li><strong>Perlita 6 (Grove Court):</strong> Pasaje privado escondido en Calle arboleda.</li>
-                                <li><strong>Parque de la Plaza Washington:</strong> Caminan hacia el parque para pasar bajo el monumental Arco de la Plaza Washington.</li>
-                            </ul>
-                        </li>
-                        <li><strong>05:00 PM - Tour del SoHo (Distrito Histórico de Hierro Fundido):</strong> Cruzan W Houston St para ingresar a SoHo. Recorren las calles empedradas de calle verde, calle primavera y Calle Príncipe contemplando la arquitectura de hierro fundido, las galerías de arte y las tiendas boutique abiertas.
-                            <br><a href="https://maps.google.com/?q=Greenwich+Village+SoHo" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido a pie por Greenwich Village, Friends Apartment, Washington Square Park y SoHo</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Greenwich Village, SoHo & Sus Perlitas</h4>
+                        <ul>
+                            <li><strong>03:45 PM - Inmersión en Greenwich Village:</strong> Ingresan a las calles arboladas de West Village.
+                                <ul>
+                                    <li><strong>Perlita 4 (Apartamento Amigos):</strong> Parada fotográfica en Bedford St & Grove St para ver la fachada del edificio de Amigos.</li>
+                                    <li><strong>Perlita 5 (La casa de Carrie Bradshaw):</strong> Visitan la fachada de la casa de Sexo y la ciudad en Calle Perry 66.</li>
+                                    <li><strong>Perlita 6 (Grove Court):</strong> Pasaje privado escondido en Calle arboleda.</li>
+                                    <li><strong>Parque de la Plaza Washington:</strong> Caminan hacia el parque para pasar bajo el monumental Arco de la Plaza Washington.</li>
+                                </ul>
+                            </li>
+                            <li><strong>05:00 PM - Tour del SoHo (Distrito Histórico de Hierro Fundido):</strong> Cruzan W Houston St para ingresar a SoHo. Recorren las calles empedradas de calle verde, calle primavera y Calle Príncipe contemplando la arquitectura de hierro fundido, las galerías de arte y las tiendas boutique abiertas.
+                                <a href="https://maps.google.com/?q=Greenwich+Village+SoHo" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">⛲</div>
+                                    <span class="link-text">Recorrido por Greenwich Village, Friends Appt, Washington Sq y SoHo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / NOCHE</div>
-                <div class="card">
-                    <h4>Perlitas de TriBeCa & Regreso al Hotel</h4>
-                    <ul>
-                        <li><strong>06:15 PM - Paseo por TriBeCa:</strong> Continúan hacia el sur cruzando Canal St para ingresar a TriBeCa.
-                            <ul>
-                                <li><strong>Perlita 7 (Puente aéreo de Staple Street):</strong> Pasaje pintoresco con el puente aéreo de hierro en Calle grapa.</li>
-                                <li><strong>Perlita 8 (Compañía Hook & Ladder 8):</strong> Famosa estación de bomberos de Cazafantasmas en 14 N Moore St.</li>
-                                <li><strong>Perlita 9 (Pier 26 at Hudson River Park):</strong> Muelle costero ideal para ver el atardecer sobre Hudson River y Freedom Tower.</li>
-                            </ul>
-                        </li>
-                        <li><strong>07:15 PM - Viaje de vuelta al Hotel:</strong> Desde Estación de tren Franklin St (el Estación de Canal St), toman la 1 línea el Línea A / Línea C/ Línea E (Dirección Zona residencial) directamente hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria, a dos cuadras del hotel.</li>
-                        <li><strong>07:45 PM - Compran comida al paso y descanso:</strong> Compran la cena en locales cercanos al hotel (deli, pizza o comida rápida) para comer tranquilos en la habitación.
-                            <br><a href="https://maps.google.com/?q=SoHo+to+TriBeCa+to+Hotel" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido por SoHo a TriBeCa y regreso al Hotel via Subway</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde / Noche</div>
+                    <div class="card">
+                        <h4>Perlitas de TriBeCa & Regreso al Hotel</h4>
+                        <ul>
+                            <li><strong>06:15 PM - Paseo por TriBeCa:</strong> Continúan hacia el sur cruzando Canal St para ingresar a TriBeCa.
+                                <ul>
+                                    <li><strong>Perlita 7 (Puente aéreo de Staple Street):</strong> Pasaje pintoresco con el puente aéreo de hierro en Calle grapa.</li>
+                                    <li><strong>Perlita 8 (Compañía Hook & Ladder 8):</strong> Famosa estación de bomberos de Cazafantasmas en 14 N Moore St.</li>
+                                    <li><strong>Perlita 9 (Pier 26 at Hudson River Park):</strong> Muelle costero ideal para ver el atardecer sobre Hudson River y Freedom Tower.</li>
+                                </ul>
+                            </li>
+                            <li><strong>07:15 PM - Viaje de vuelta al Hotel:</strong> Desde Estación de tren Franklin St (el Estación de Canal St), toman la 1 línea el Línea A / Línea C/ Línea E (Dirección Zona residencial) directamente hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria, a dos cuadras del hotel.</li>
+                            <li><strong>07:45 PM - Compran comida al paso y descanso:</strong> Compran la cena en locales cercanos al hotel (deli, pizza o comida rápida) para comer tranquilos en la habitación.
+                                <a href="https://maps.google.com/?q=SoHo+to+TriBeCa+to+Hotel" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Recorrido por SoHo a TriBeCa y regreso al Hotel via Subway</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 6 -->
         <div id="view-day-6" class="view-section">
-            <h2 class="day-title">DÍA 6: Domingo 20 de Septiembre - Midtown, Central Park, 5th Avenue & SUMMIT One Vanderbilt</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Domingo 20 de Septiembre</div>
+                <h2 class="day-headline">Midtown, Central Park, 5th Ave & SUMMIT One Vanderbilt</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Central Park Free Tour</h4>
-                    <ul>
-                        <li><strong>09:30 AM - Caminata hacia el punto de encuentro:</strong> Salen del hotel caminando hacia el acceso sur de parque central en 59th St.</li>
-                        <li><strong>10:00 AM - Free Tour por el Parque Central (Civitatis):</strong> Recorrido a pie descubriendo el sector sur del parque (puntos icónicos como el estanque, Puente de Gapstow, Pista Wollman, El centro comercial y Terraza Bethesda).</li>
-                        <li><strong>12:30 PM - Finalización del tour en Grand Army Plaza:</strong> El recorrido concluye en Grand Army Plaza (59th St & 5th Ave), el punto de partida perfecto para el Distrito comercial de lujo.</li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Central Park Free Tour</h4>
+                        <ul>
+                            <li><strong>09:30 AM - Caminata hacia el punto de encuentro:</strong> Salen del hotel caminando hacia el acceso sur de parque central en 59th St.</li>
+                            <li><strong>10:00 AM - Free Tour por el Parque Central (Civitatis):</strong> Recorrido a pie descubriendo el sector sur del parque (puntos icónicos como el estanque, Puente de Gapstow, Pista Wollman, El centro comercial y Terraza Bethesda).</li>
+                            <li><strong>12:30 PM - Finalización del tour en Grand Army Plaza:</strong> El recorrido concluye en Grand Army Plaza (59th St & 5th Ave), el punto de partida perfecto para el Distrito comercial de lujo.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA</div>
-                <div class="card">
-                    <h4>5th Avenue Luxury Shopping District & Almuerzo</h4>
-                    <ul>
-                        <li><strong>12:45 PM - Recorrido por el Luxury Shopping District:</strong> Caminan hacia el sur por 5ta avenida contemplando las fachadas y vitrinas icónicas de las tiendas de alta costura:
-                            <ul>
-                                <li>Bergdorf Goodman (Calle 57)</li>
-                                <li>Luis Vuitton, gucci, dior, Prada, Rolex, Cartier (con su emblemático edificio histórico) y Buque insignia de Tiffany & Co. (el hito).</li>
-                            </ul>
-                        </li>
-                        <li><strong>01:30 PM - Visita a Apple Tower Cube (5th Avenue):</strong> Ingresan a la famosa tienda de vidrio subterránea de Apple.</li>
-                        <li><strong>02:00 PM - Almuerzo en Urban Space Vanderbilt o alrededores:</strong> Parada gastronómica cercana.
-                            <br><a href="https://maps.google.com/?q=Grand+Army+Plaza+to+Apple+Store+5th+Ave" target="_blank" class="link-box">Enlace de ruta en Google Maps: Grand Army Plaza por 5th Avenue Luxury District a Apple Store</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Mediodía</div>
+                    <div class="card">
+                        <h4>5th Avenue Luxury Shopping District & Almuerzo</h4>
+                        <ul>
+                            <li><strong>12:45 PM - Recorrido por el Luxury Shopping District:</strong> Caminan hacia el sur por 5ta avenida contemplando las fachadas y vitrinas icónicas de las tiendas de alta costura:
+                                <ul>
+                                    <li>Bergdorf Goodman (Calle 57)</li>
+                                    <li>Luis Vuitton, gucci, dior, Prada, Rolex, Cartier (con su emblemático edificio histórico) y Buque insignia de Tiffany & Co. (el hito).</li>
+                                </ul>
+                            </li>
+                            <li><strong>01:30 PM - Visita a Apple Tower Cube (5th Avenue):</strong> Ingresan a la famosa tienda de vidrio subterránea de Apple.</li>
+                            <li><strong>02:00 PM - Almuerzo en Urban Space Vanderbilt o alrededores:</strong> Parada gastronómica cercana.
+                                <a href="https://maps.google.com/?q=Grand+Army+Plaza+to+Apple+Store+5th+Ave" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">👜</div>
+                                    <span class="link-text">Grand Army Plaza por 5th Avenue Luxury District a Apple Store</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Catedral de San Patricio, Rockefeller Center, Bryant Park y Biblioteca Pública de Nueva York</h4>
-                    <ul>
-                        <li><strong>15:15 - Catedral de San Patricio:</strong> Visitan el interior de la imponente catedral neogótica sobre 5ta avenida.</li>
-                        <li><strong>03:45 PM - Rockefeller Center y Saks Quinta Avenida:</strong> Recorren la plaza central de Centro Rockefeller, contemplan la estatua de Prometeo, el edificio 30 Rockefeller Plaza (30 Roca) y la fachada de Saks Quinta Avenida.
-                            <ul>
-                                <li><strong>Perlita 1 (Atlas Statue):</strong> Impresionante escultura de bronce frente a Catedral de San Patricio.</li>
-                                <li><strong>Perlita 2 (Channel Gardens):</strong> El hermoso pasaje ajardinado que conecta 5ta avenida con la plaza central de Centro Rockefeller.</li>
-                            </ul>
-                        </li>
-                        <li><strong>04:45 PM - Biblioteca Pública de Nueva York y Bryant Park:</strong> Caminan tres cuadras al sur por 5ta avenida hacia 42nd St.
-                            <ul>
-                                <li><strong>Biblioteca Pública de Nueva York (Edificio Stephen A. Schwarzman):</strong> Fotografía en la escalinata principal con los famosos leones de piedra (Paciencia y Fortaleza) y visita al Sala de lectura principal Rose.</li>
-                                <li><strong>Parque Bryant:</strong> Paseo rápido por los jardines del parque a la luz de la tarde.</li>
-                            </ul>
-                            <br><a href="https://maps.google.com/?q=St+Patricks+Cathedral+to+Rockefeller+Center+NY+Public+Library+Bryant+Park" target="_blank" class="link-box">Enlace de ruta en Google Maps: St. Patrick's Cathedral a Rockefeller Center, NY Public Library y Bryant Park</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Catedral, Rockefeller Center, Bryant Park y NY Public Library</h4>
+                        <ul>
+                            <li><strong>15:15 - Catedral de San Patricio:</strong> Visitan el interior de la imponente catedral neogótica sobre 5ta avenida.</li>
+                            <li><strong>03:45 PM - Rockefeller Center y Saks Quinta Avenida:</strong> Recorren la plaza central de Centro Rockefeller, contemplan la estatua de Prometeo, el edificio 30 Rockefeller Plaza (30 Roca) y la fachada de Saks Quinta Avenida.
+                                <ul>
+                                    <li><strong>Perlita 1 (Atlas Statue):</strong> Impresionante escultura de bronce frente a Catedral de San Patricio.</li>
+                                    <li><strong>Perlita 2 (Channel Gardens):</strong> El hermoso pasaje ajardinado que conecta 5ta avenida con la plaza central de Centro Rockefeller.</li>
+                                </ul>
+                            </li>
+                            <li><strong>04:45 PM - Biblioteca Pública de Nueva York y Bryant Park:</strong> Caminan tres cuadras al sur por 5ta avenida hacia 42nd St.
+                                <ul>
+                                    <li><strong>Biblioteca Pública de Nueva York (Edificio Stephen A. Schwarzman):</strong> Fotografía en la escalinata principal con los famosos leones de piedra (Paciencia y Fortaleza) y visita al Sala de lectura principal Rose.</li>
+                                    <li><strong>Parque Bryant:</strong> Paseo rápido por los jardines del parque a la luz de la tarde.</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=St+Patricks+Cathedral+to+Rockefeller+Center+NY+Public+Library+Bryant+Park" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🏛️</div>
+                                    <span class="link-text">St. Patrick's a Rockefeller, NY Public Library y Bryant Park</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / NOCHE</div>
-                <div class="card">
-                    <h4>Experiencia SUMMIT One Vanderbilt & Grand Central Terminal</h4>
-                    <ul>
-                        <li><strong>05:30 PM - Check-in en SUMMIT One Vanderbilt:</strong> Caminan dos cuadras al este por 42nd St e ingresan al mirador con luz de día.</li>
-                        <li><strong>05:45 PM a 07:30 PM - SUMMIT One Vanderbilt (Atardecer & Noche):</strong> Disfrutan de la transición del día a la noche sobre el skyline de Manhattan a través de sus salas de espejos (AIRE), plataformas de cristal (LEVITACIÓN) y el bar de la terraza (Después).</li>
-                        <li><strong>07:30 PM - Grand Central Terminal & Perlitas Nocturnas:</strong> Al descender del SUMMIT, conectan directamente con la estación de trenes.
-                            <ul>
-                                <li><strong>Vestíbulo principal:</strong> Contemplan el techo astronómico iluminado y el histórico Galería susurrante (Galería de los Susurros junto a Barra de ostras).</li>
-                                <li><strong>Perlita 3 (Vista del edificio Chrysler):</strong> Salen a la esquina de 42nd St & Lexington Ave para fotografiar la aguja iluminada del Edificio Chrysler de noche.</li>
-                            </ul>
-                            <br><a href="https://maps.google.com/?q=Bryant+Park+to+SUMMIT+One+Vanderbilt+Grand+Central+Terminal" target="_blank" class="link-box">Enlace de ruta en Google Maps: De Bryant Park a SUMMIT One Vanderbilt y Grand Central Terminal</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde / Noche</div>
+                    <div class="card">
+                        <h4>Experiencia SUMMIT One Vanderbilt & Grand Central Terminal</h4>
+                        <ul>
+                            <li><strong>05:30 PM - Check-in en SUMMIT One Vanderbilt:</strong> Caminan dos cuadras al este por 42nd St e ingresan al mirador con luz de día.</li>
+                            <li><strong>05:45 PM a 07:30 PM - SUMMIT One Vanderbilt (Atardecer & Noche):</strong> Disfrutan de la transición del día a la noche sobre el skyline de Manhattan a través de sus salas de espejos (AIRE), plataformas de cristal (LEVITACIÓN) y el bar de la terraza (Después).</li>
+                            <li><strong>07:30 PM - Grand Central Terminal & Perlitas Nocturnas:</strong> Al descender del SUMMIT, conectan directamente con la estación de trenes.
+                                <ul>
+                                    <li><strong>Vestíbulo principal:</strong> Contemplan el techo astronómico iluminado y el histórico Galería susurrante (Galería de los Susurros junto a Barra de ostras).</li>
+                                    <li><strong>Perlita 3 (Vista del edificio Chrysler):</strong> Salen a la esquina de 42nd St & Lexington Ave para fotografiar la aguja iluminada del Edificio Chrysler de noche.</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=Bryant+Park+to+SUMMIT+One+Vanderbilt+Grand+Central+Terminal" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚉</div>
+                                    <span class="link-text">De Bryant Park a SUMMIT One Vanderbilt y Grand Central Terminal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <h4>NOCHE: Regreso al Hotel</h4>
-                    <ul>
-                        <li><strong>08:15 PM - Regreso caminando al Hotel:</strong> Desde Gran Terminal Central, caminan directo por W 42nd St hacia el oeste (unos 12 minutos) hasta llegar al hotel para cenar algo al paso y descansar.
-                            <br><a href="https://maps.google.com/?q=Grand+Central+Terminal+to+Hotel" target="_blank" class="link-box">Enlace de ruta en Google Maps: Regreso desde Grand Central Terminal al Hotel a pie</a>
-                        </li>
-                    </ul>
+
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Regreso al Hotel</h4>
+                        <ul>
+                            <li><strong>08:15 PM - Regreso caminando al Hotel:</strong> Desde Gran Terminal Central, caminan directo por W 42nd St hacia el oeste (unos 12 minutos) hasta llegar al hotel para cenar algo al paso y descansar.
+                                <a href="https://maps.google.com/?q=Grand+Central+Terminal+to+Hotel" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚶</div>
+                                    <span class="link-text">Regreso desde Grand Central Terminal al Hotel a pie</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 7 -->
         <div id="view-day-7" class="view-section">
-            <h2 class="day-title">DÍA 7: Lunes 21 de Septiembre - Tour Contrastes, Souvenirs en Canal St, Chinatown, San Gennaro y Perlitas de Nolita</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Lunes 21 de Septiembre</div>
+                <h2 class="day-headline">Tour Contrastes, Canal St, Chinatown, San Gennaro y Nolita</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Tour Contrastes de Nueva York en Autobús</h4>
-                    <ul>
-                        <li><strong>08:30 AM - Llegada al punto de encuentro:</strong> Salen caminando desde el hotel hacia la esquina de 7th Ave & W 51st St para realizar el check-in del tour.
-                            <br><a href="https://maps.google.com/?q=Hotel+to+7th+Ave+and+W+51st+St" target="_blank" class="link-box">Enlace de ruta en Google Maps: Del Hotel al punto de encuentro del tour caminando</a>
-                        </li>
-                        <li><strong>09:00 AM - Inicio del Tour Contrastes (Duración: 6 horas, con almuerzo en el camino):</strong> Abordan el autobús para el recorrido guiado por los distritos emblemáticos:
-                            <ul>
-                                <li><strong>El Bronx:</strong> Recorrido por estadios, grafitis históricos y comisarías famosas.</li>
-                                <li><strong>Queens:</strong> Paso por zonas residenciales, Malba y Flushing Meadows-Corona Park.</li>
-                                <li><strong>Brooklyn:</strong> Cierre atravesando el barrio judío ultraortodoxo de Williamsburg.</li>
-                            </ul>
-                        </li>
-                        <li><strong>03:00 PM - Finalización del Tour:</strong> El autobús regresa a Manhattan y descienden directamente en Lower Manhattan (zona de Chinatown / Little Italy).</li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Tour Contrastes de Nueva York en Autobús</h4>
+                        <ul>
+                            <li><strong>08:30 AM - Llegada al punto de encuentro:</strong> Salen caminando desde el hotel hacia la esquina de 7th Ave & W 51st St para realizar el check-in del tour.
+                                <a href="https://maps.google.com/?q=Hotel+to+7th+Ave+and+W+51st+St" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">📍</div>
+                                    <span class="link-text">Del Hotel al punto de encuentro del tour caminando</span>
+                                </a>
+                            </li>
+                            <li><strong>09:00 AM - Inicio del Tour Contrastes (Duración: 6 horas, con almuerzo):</strong> Abordan el autobús para el recorrido guiado:
+                                <ul>
+                                    <li><strong>El Bronx:</strong> Recorrido por estadios, grafitis históricos y comisarías famosas.</li>
+                                    <li><strong>Queens:</strong> Paso por zonas residenciales, Malba y Flushing Meadows-Corona Park.</li>
+                                    <li><strong>Brooklyn:</strong> Cierre atravesando el barrio judío ultraortodoxo de Williamsburg.</li>
+                                </ul>
+                            </li>
+                            <li><strong>03:00 PM - Finalización del Tour:</strong> El autobús regresa a Manhattan y descienden directamente en Lower Manhattan (zona de Chinatown / Little Italy).</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>Compras de Souvenirs y Recorrido por Chinatown</h4>
-                    <ul>
-                        <li><strong>03:15 PM - Compras de Souvenirs Baratos en Canal Street:</strong> Apenas bajan del tour, caminan a lo largo de Canal Street (entre Broadway y Mott St). Es el epicentro de la ciudad para conseguir camisetas, imanes, llaveros, estatuillas de la Libertad y gorras a precios muy bajos. (Tip: En la mayoría de estos locales se puede regatear el precio final si llevan varias cosas).</li>
-                        <li><strong>04:15 PM - Recorrido cultural por Chinatown y Mosco Street:</strong>
-                            <ul>
-                                <li><strong>Callejones históricos:</strong> Recorren la colorida Calle Doyers (famosa curva con murales) y caminan por Calle Mott y Calle Pell.</li>
-                                <li><strong>Perlita Oculta (Mosco Street):</strong> Caminan por Mosco Street, un histórico pasaje de adoquines en pendiente que conserva la esencia cinematográfica del Nueva York de principios del siglo XX.</li>
-                                <li><strong>Perlita Cultural 1 (Columbus Park):</strong> Desembocan en Parque Colón, donde los vecinos locales se juntan a jugar al ajedrez chino (Xiangqi), practicar Tai Chi y tocar música tradicional.</li>
-                                <li><strong>Perlita Cultural 2 (Mahayana Buddhist Temple):</strong> Caminan hacia la entrada del puente de Manhattan para entrar al Templo budista mahayana, donde impacta la estatua dorada de Buda de 5 metros de altura.</li>
-                            </ul>
-                            <br><a href="https://maps.google.com/?q=Canal+St+Chinatown+Mosco+St+Columbus+Park+Mahayana+Temple" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido a pie por Canal St, Chinatown, Mosco St, Columbus Park y Mahayana Temple</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>Compras de Souvenirs y Recorrido por Chinatown</h4>
+                        <ul>
+                            <li><strong>03:15 PM - Compras en Canal Street:</strong> Apenas bajan del tour, caminan a lo largo de Canal Street (entre Broadway y Mott St). Es el epicentro de la ciudad para conseguir souvenirs baratos. (Tip: En la mayoría de estos locales se puede regatear el precio final si llevan varias cosas).</li>
+                            <li><strong>04:15 PM - Recorrido cultural por Chinatown y Mosco Street:</strong>
+                                <ul>
+                                    <li><strong>Callejones históricos:</strong> Recorren la colorida Calle Doyers (famosa curva con murales) y caminan por Calle Mott y Calle Pell.</li>
+                                    <li><strong>Perlita Oculta (Mosco Street):</strong> Caminan por Mosco Street, un histórico pasaje de adoquines en pendiente que conserva la esencia cinematográfica del Nueva York de principios del siglo XX.</li>
+                                    <li><strong>Perlita Cultural 1 (Columbus Park):</strong> Desembocan en Parque Colón, donde los vecinos locales se juntan a jugar al ajedrez chino (Xiangqi), practicar Tai Chi y tocar música tradicional.</li>
+                                    <li><strong>Perlita Cultural 2 (Mahayana Buddhist Temple):</strong> Caminan hacia la entrada del puente de Manhattan para entrar al Templo budista mahayana, donde impacta la estatua dorada de Buda de 5 metros de altura.</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=Canal+St+Chinatown+Mosco+St+Columbus+Park+Mahayana+Temple" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🏮</div>
+                                    <span class="link-text">Recorrido a pie por Canal St, Chinatown, Mosco St, Columbus Park y Templo</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / NOCHE</div>
-                <div class="card">
-                    <h4>Fiesta de San Gennaro en Little Italy y Rincones de Nolita</h4>
-                    <ul>
-                        <li><strong>05:15 PM - Inmersión en la Fiesta de San Gennaro:</strong> Cruzan hacia pequeña italia a la altura de Grand Street.
-                            <ul>
-                                <li><strong>Paseo por el festival:</strong> Recorren toda la peatonal de calle morera entre puestos de comida típica (zeppoles, turrones, cannoli, bocadillos de salchicha con pimientos), música y arcos de luces.</li>
-                                <li><strong>Perlita de Arte:</strong> En Mulberry St y Broome St contemplan el famoso mural callejero de Audrey Hepburn.</li>
-                                <li><strong>Perlita Histórica:</strong> Pasan por la iglesia Iglesia de la Preciosísima Sangre, sede donde se custodia la figura del santo durante los festejos.</li>
-                            </ul>
-                        </li>
-                        <li><strong>06:15 PM - Postre Tradicional:</strong> Parada técnica en la emblemática Panadería y cafetería Ferrara (fundada en 1892) para acompañar la festividad con un cannolo o espresso.</li>
-                        <li><strong>06:45 PM - Paseo por Nolita y Elizabeth Street Garden:</strong> Suben dos cuadras hacia el norte ingresando a NoLIta (Al norte de la Pequeña Italia).
-                            <ul>
-                                <li><strong>Perlita Oculta:</strong> Visitan Jardín de la calle Isabel, un oasis comunitario lleno de esculturas y verde, perfecto para descansar un rato de la multitud.</li>
-                            </ul>
-                        </li>
-                        <li><strong>07:15 PM - Perlita Gastronómica:</strong> Pasan por Tarta de queso especial de Eileen, un histórico local familiar famoso por sus minitartas de queso individuales.
-                            <br><a href="https://maps.google.com/?q=Little+Italy+San+Gennaro+Nolita" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido a pie por Little Italy, San Gennaro, Audrey Hepburn Mural y Nolita</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde / Noche</div>
+                    <div class="card">
+                        <h4>Fiesta de San Gennaro en Little Italy y Rincones de Nolita</h4>
+                        <ul>
+                            <li><strong>05:15 PM - Inmersión en la Fiesta de San Gennaro:</strong> Cruzan hacia pequeña italia a la altura de Grand Street.
+                                <ul>
+                                    <li><strong>Paseo por el festival:</strong> Recorren toda la peatonal de calle morera entre puestos de comida típica (zeppoles, turrones, cannoli, bocadillos de salchicha con pimientos), música y arcos de luces.</li>
+                                    <li><strong>Perlita de Arte:</strong> En Mulberry St y Broome St contemplan el famoso mural callejero de Audrey Hepburn.</li>
+                                    <li><strong>Perlita Histórica:</strong> Pasan por la iglesia Iglesia de la Preciosísima Sangre, sede donde se custodia la figura del santo durante los festejos.</li>
+                                </ul>
+                            </li>
+                            <li><strong>06:15 PM - Postre Tradicional:</strong> Parada técnica en la emblemática Panadería y cafetería Ferrara (fundada en 1892) para acompañar la festividad con un cannolo o espresso.</li>
+                            <li><strong>06:45 PM - Paseo por Nolita y Elizabeth Street Garden:</strong> Suben dos cuadras hacia el norte ingresando a NoLIta (Al norte de la Pequeña Italia).
+                                <ul>
+                                    <li><strong>Perlita Oculta:</strong> Visitan Jardín de la calle Isabel, un oasis comunitario lleno de esculturas y verde, perfecto para descansar un rato de la multitud.</li>
+                                </ul>
+                            </li>
+                            <li><strong>07:15 PM - Perlita Gastronómica:</strong> Pasan por Tarta de queso especial de Eileen, un histórico local familiar famoso por sus minitartas de queso individuales.
+                                <a href="https://maps.google.com/?q=Little+Italy+San+Gennaro+Nolita" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🍝</div>
+                                    <span class="link-text">Recorrido a pie por Little Italy, San Gennaro, Audrey Hepburn Mural y Nolita</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <h4>NOCHE: Regreso al Hotel</h4>
-                    <ul>
-                        <li><strong>07:45 PM - Viaje de vuelta:</strong> Desde la estación Estación de tren Spring St (el Estación de Canal St), toman la Línea A, C o E (Dirección Zona residencial) directamente hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria, saliendo a dos cuadras del hotel para descansar.
-                            <br><a href="https://maps.google.com/?q=Nolita+to+Hotel+via+Subway" target="_blank" class="link-box">Enlace de ruta en Google Maps: Regreso desde Nolita al Hotel via Subway</a>
-                        </li>
-                    </ul>
+
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Regreso al Hotel</h4>
+                        <ul>
+                            <li><strong>07:45 PM - Viaje de vuelta:</strong> Desde la estación Estación de tren Spring St (el Estación de Canal St), toman la Línea A, C o E (Dirección Zona residencial) directamente hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria, saliendo a dos cuadras del hotel para descansar.
+                                <a href="https://maps.google.com/?q=Nolita+to+Hotel+via+Subway" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Regreso desde Nolita al Hotel via Subway</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- DÍA 8 -->
         <div id="view-day-8" class="view-section">
-            <h2 class="day-title">DÍA 8: Martes 22 de Septiembre – EAST RIVER, ROOSEVELT ISLAND, WILLIAMSBURG, DUMBO, BROOKLYN BRIDGE & STATEN ISLAND</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Martes 22 de Septiembre</div>
+                <h2 class="day-headline">East River, Roosevelt Island, Williamsburg, DUMBO & Staten Island</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Teleférico de Roosevelt Island & East River Ferry</h4>
-                    <ul>
-                        <li><strong>09:30 AM - Teleférico de Roosevelt Island:</strong> Abordar el Tranvía de la isla Roosevelt en Manhattan (2nd Ave & E 60th St) usando la tarjeta MetroCard/OMNY. Disfrutar del cruce aéreo panorámico sobre el East River con vistas al skyline de Midtown.</li>
-                        <li><strong>10:00 AM - 10:35 AM - Recorrido por Roosevelt Island:</strong> Caminar hacia el extremo sur de la isla visitando el Parque Estatal Franklin D. Roosevelt Cuatro Libertades. Observar las ruinas del Hospital de viruela y disfrutar del paseo costero frente al East River.</li>
-                        <li><strong>10:40 AM - Terminal de Ferry de Roosevelt Island:</strong> Caminar hacia la terminal Terminal de ferry de la isla Roosevelt de Nueva York.</li>
-                        <li><strong>10:43 AM - Ferry de Nueva York (Ruta Astoria):</strong> Tomar la Ruta Astoria (dirección Centro).
-                            <br><strong>11:20 a.m.:</strong> Arribo a Muelle 11/Wall St.
-                        </li>
-                        <li><strong>11:20 AM - 11:30 AM - Transbordo en Pier 11 / Wall St:</strong> En el mismo muelle, dirigirse al embarcadero de la Ruta del Río Este (Ruta ER).</li>
-                        <li><strong>11:30 AM - Ferry de Nueva York (ruta del East River):</strong> Muelle 11 / Wall St → North Williamsburg: Abordar el primer servicio disponible de la Ruta del río Este con dirección a Williamsburg del norte.
-                            <br><strong>11:40 a. m.:</strong> Arribo a Terminal de ferry de North Williamsburg, Nueva York.
-                            <br><a href="https://maps.google.com/?q=Roosevelt+Island+Ferry+to+Pier+11+to+North+Williamsburg" target="_blank" class="link-box">Enlace de ruta en Google Maps: Ferry Roosevelt Island a Pier 11 y transbordo a North Williamsburg</a>
-                        </li>
-                    </ul>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Teleférico de Roosevelt Island & East River Ferry</h4>
+                        <ul>
+                            <li><strong>09:30 AM - Teleférico:</strong> Abordar el Tranvía de la isla Roosevelt en Manhattan (2nd Ave & E 60th St) usando la tarjeta MetroCard/OMNY. Disfrutar del cruce aéreo panorámico.</li>
+                            <li><strong>10:00 AM - 10:35 AM - Recorrido Roosevelt Island:</strong> Caminar hacia el extremo sur visitando el Parque Estatal Franklin D. Roosevelt Cuatro Libertades. Observar las ruinas del Hospital de viruela y el paseo costero.</li>
+                            <li><strong>10:40 AM - Terminal de Ferry:</strong> Caminar hacia la Terminal de ferry de la isla Roosevelt de Nueva York.</li>
+                            <li><strong>10:43 AM - Ferry de NY (Ruta Astoria):</strong> Tomar la Ruta Astoria (dirección Centro). Arribo a Muelle 11/Wall St a las 11:20 a.m.</li>
+                            <li><strong>11:20 AM - 11:30 AM - Transbordo Pier 11 / Wall St:</strong> Dirigirse al embarcadero de la Ruta del Río Este (Ruta ER).</li>
+                            <li><strong>11:30 AM - Ferry de NY (Ruta East River):</strong> Muelle 11 / Wall St → North Williamsburg: Abordar el primer servicio con dirección a Williamsburg del norte. Arribo a las 11:40 a.m.
+                                <a href="https://maps.google.com/?q=Roosevelt+Island+Ferry+to+Pier+11+to+North+Williamsburg" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">⛴️</div>
+                                    <span class="link-text">Ferry Roosevelt Island a Pier 11 y transbordo a North Williamsburg</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">MEDIODÍA</div>
-                <div class="card">
-                    <h4>Recorrido Hipster Norte a Sur por Williamsburg + Almuerzo (11:40 AM - 02:30 PM)</h4>
-                    <p>Paso a paso del recorrido a pie:</p>
-                    <ol>
-                        <li>Salen de Terminal de ferry de North Williamsburg, Nueva York y caminan 2 cuadras al norte por Kent Ave apreciando el borde costero hasta Parque Estatal Marsha P. Johnson.</li>
-                        <li>Doblan al este por Calle 10 Norte pasando brevemente junto a Parque McCarren.</li>
-                        <li>Ingresan a Avenida Bedford a la altura de N 10th St y la caminan completa hacia el sur hasta S 1st St (recorriendo todo el tramo icónico hipster, tiendas vintage, cafés y boutiques entre N 7th St y S 1st St).</li>
-                        <li>Al llegar a Calle 1 S., doblan a la derecha (hacia el oeste / río) para ingresar directo a Parque Dominó.</li>
-                        <li>Recorren Parque Dominó hacia el sur disfrutando de las vistas panorámicas al skyline de Manhattan y al Puente de Williamsburg.</li>
-                    </ol>
-                    <p><strong>Almuerzo:</strong> Parada de 1 hora para almorzar relajados sobre Avenida Bedford o en la zona gastronómica frente a Parque Dominó.</p>
-                    <a href="https://maps.google.com/?q=Williamsburg+Walking+Tour+North+to+South" target="_blank" class="link-box">Enlace de ruta en Google Maps: Caminata a pie completa por Williamsburg desde North Williamsburg Terminal a Kent Ave, McCarren Park, Bedford Ave completa, Domino Park y South Williamsburg Terminal</a>
+                <div class="time-block">
+                    <div class="time-label">Mediodía</div>
+                    <div class="card">
+                        <h4>Recorrido Hipster por Williamsburg + Almuerzo (11:40 AM - 02:30 PM)</h4>
+                        <ol>
+                            <li>Salen de Terminal de ferry de North Williamsburg, Nueva York y caminan 2 cuadras al norte por Kent Ave apreciando el borde costero hasta Parque Estatal Marsha P. Johnson.</li>
+                            <li>Doblan al este por Calle 10 Norte pasando brevemente junto a Parque McCarren.</li>
+                            <li>Ingresan a Avenida Bedford a la altura de N 10th St y la caminan completa hacia el sur hasta S 1st St (recorriendo todo el tramo icónico hipster, tiendas vintage, cafés y boutiques entre N 7th St y S 1st St).</li>
+                            <li>Al llegar a Calle 1 S., doblan a la derecha (hacia el oeste / río) para ingresar directo a Parque Dominó.</li>
+                            <li>Recorren Parque Dominó hacia el sur disfrutando de las vistas panorámicas al skyline de Manhattan y al Puente de Williamsburg.</li>
+                        </ol>
+                        <p class="mt-2"><strong>Almuerzo:</strong> Parada de 1 hora para almorzar relajados sobre Avenida Bedford o en la zona gastronómica frente a Parque Dominó.</p>
+                        <a href="https://maps.google.com/?q=Williamsburg+Walking+Tour+North+to+South" target="_blank" class="action-link mt-2">
+                            <div class="icon-box">☕</div>
+                            <span class="link-text">Caminata por Williamsburg: North Williamsburg Terminal, Kent Ave, McCarren Park, Bedford Ave, Domino Park y South Williamsburg Terminal</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE</div>
-                <div class="card">
-                    <h4>DUMBO, Brooklyn Bridge & South Street Seaport</h4>
-                    <ul>
-                        <li><strong>14:30 - 14:40 - Ferry de Nueva York: South Williamsburg a DUMBO:</strong> Salen del extremo sur de Domino Park y caminan 3 minutos a Terminal de ferry de South Williamsburg, Nueva York (Kent Ave y S 10th St). Abordan el ferry de la Ruta del río Este (dirección Sur / Muelle 11). Navegan por debajo del Puente de Williamsburg directamente hacia Ferry DUMBO/Fulton.
-                            <br><strong>14:50:</strong> Arribo a DUMBO.
-                        </li>
-                        <li><strong>02:50 PM - 03:50 PM - Recorrido por DUMBO:</strong> Fotografía icónica en Washington St. (encuadre del Manhattan Bridge). Paseo por El carrusel de Jane y caminata por los senderos de Parque del Puente de Brooklyn.</li>
-                        <li><strong>03:50 PM - 04:30 PM - Cruce peatonal del Brooklyn Bridge:</strong> Inicio de la caminata sobre la pasarela elevada del Puente de Brooklyn cruzando hacia Manhattan.</li>
-                        <li><strong>04:30 PM - 05:30 PM - South Street Seaport y Paseo a Battery Park:</strong> Recorrido por la zona histórica de Puerto marítimo de la calle sur, Muelle 17 y Muelle 15. Caminata junto al río con dirección a Terminal de Whitehall en parque de baterías.
-                            <br><a href="https://maps.google.com/?q=DUMBO+Brooklyn+Bridge+South+Street+Seaport+to+Whitehall+Terminal" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido DUMBO, Brooklyn Bridge, South Street Seaport a Whitehall Terminal</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde</div>
+                    <div class="card">
+                        <h4>DUMBO, Brooklyn Bridge & South Street Seaport</h4>
+                        <ul>
+                            <li><strong>14:30 - 14:40 - Ferry a DUMBO:</strong> Salen de Domino Park a Terminal de ferry de South Williamsburg, Nueva York. Abordan el ferry de la Ruta del río Este (dirección Sur / Muelle 11). Navegan bajo el Puente de Williamsburg hacia Ferry DUMBO/Fulton. Arribo: 14:50.</li>
+                            <li><strong>02:50 PM - 03:50 PM - Recorrido por DUMBO:</strong> Fotografía icónica en Washington St. (encuadre del Manhattan Bridge). Paseo por El carrusel de Jane y Parque del Puente de Brooklyn.</li>
+                            <li><strong>03:50 PM - 04:30 PM - Cruce del Brooklyn Bridge:</strong> Caminata sobre la pasarela elevada del Puente de Brooklyn cruzando hacia Manhattan.</li>
+                            <li><strong>04:30 PM - 05:30 PM - South Street Seaport y Paseo a Battery Park:</strong> Recorrido por Puerto marítimo de la calle sur, Muelle 17 y Muelle 15. Caminata junto al río hacia Terminal de Whitehall en parque de baterías.
+                                <a href="https://maps.google.com/?q=DUMBO+Brooklyn+Bridge+South+Street+Seaport+to+Whitehall+Terminal" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🌉</div>
+                                    <span class="link-text">Recorrido DUMBO, Brooklyn Bridge, South St Seaport a Whitehall Terminal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card mt-2">
+                        <h4>Ferry de Staten Island y Empire Outlets (Atardecer)</h4>
+                        <ul>
+                            <li><strong>17:30:</strong> Abordar el Ferry a la Isla de los Estados (gratuito) en Terminal de Whitehall. Vistas a estatua de la libertad y Isla Ellis.</li>
+                            <li><strong>18:00 - 19:10:</strong> Arribo a St. George Terminal. Paseo por la explanada costera y caminata por Tiendas Imperio.</li>
+                            <li><strong>19:10 - 19:50:</strong> Ferry de regreso a Manhattan apreciando las luces del skyline del Lower Manhattan al atardecer.</li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <h4>Ferry de Staten Island y Empire Outlets (Atardecer)</h4>
-                    <ul>
-                        <li><strong>17:30:</strong> Abordar el Ferry a la Isla de los Estados (gratuito) en Terminal de Whitehall. Vistas panorámicas a estatua de la libertad y Isla Ellis.</li>
-                        <li><strong>18:00 - 19:10:</strong> Arribo a St. George Terminal. Paseo por la explanada costera y caminata por Tiendas Imperio.</li>
-                        <li><strong>19:10 - 19:50:</strong> Ferry de regreso a Manhattan apreciando las luces del skyline del Lower Manhattan al atardecer.</li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">NOCHE</div>
-                <div class="card">
-                    <h4>Regreso al Hotel</h4>
-                    <p>Regreso desde Whitehall St / South Ferry Station en subte al hotel. Para el regreso al hotel al final de la tarde (después de bajarte del Staten Island Ferry en la terminal Terminal de Whitehall/Ferry Sur en el bajo Manhattan), tenés dos opciones directas y sencillas en subte para volver al Hampton Inn Times Square (339 W 39th St):</p>
-                    <ul>
-                        <li><strong>Opción 1: Subte Línea 1 (La más directa - Línea Roja)</strong>
-                            <ul>
-                                <li><strong>Dónde la tomás:</strong> En la estación Estación de ferry del sur, que está pegada a la salida del ferry.</li>
-                                <li><strong>Qué tren tomar:</strong> Línea 1 en dirección La zona alta y el Bronx.</li>
-                                <li><strong>Dónde bajarse:</strong> En la estación 34 St - Estación Penn (o en Times Square - Calle 42).</li>
-                                <li><strong>Caminata al hotel:</strong> Te bajás en 34th St, salís a la 8th Avenue y caminás solo 5 cuadras hacia el norte hasta la calle 39th St.</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <div class="card note-card" style="margin-top: 15px;">
-                        <p><em>Filosofía del día: "Un día dedicado enteramente al agua, los puentes, los barcos y a contemplar Manhattan desde todos sus mejores ángulos."</em></p>
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Regreso al Hotel</h4>
+                        <p>Para el regreso al hotel después de bajarte del Staten Island Ferry en la Terminal de Whitehall, tenés dos opciones directas y sencillas en subte para volver al Hampton Inn Times Square (339 W 39th St):</p>
+                        <ul>
+                            <li><strong>Opción 1: Subte Línea 1 (Línea Roja)</strong>
+                                <ul>
+                                    <li><strong>Dónde la tomás:</strong> Estación de ferry del sur, pegada a la salida del ferry.</li>
+                                    <li><strong>Qué tren tomar:</strong> Línea 1 en dirección La zona alta y el Bronx.</li>
+                                    <li><strong>Dónde bajarse:</strong> 34 St - Estación Penn (o en Times Square - Calle 42).</li>
+                                    <li><strong>Caminata:</strong> Te bajás en 34th St, salís a la 8th Avenue y caminás 5 cuadras hacia el norte.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card card-highlight mt-2">
+                        <p>🌊 "Un día dedicado enteramente al agua, los puentes, los barcos y a contemplar Manhattan desde todos sus mejores ángulos."</p>
                     </div>
                 </div>
             </div>
@@ -668,79 +1246,88 @@
 
         <!-- DÍA 9 -->
         <div id="view-day-9" class="view-section">
-            <h2 class="day-title">DÍA 9: Miércoles 23 de Septiembre – DÍA LIBRE & GREENWICH VILLAGE LOCAL BY NIGHT</h2>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Miércoles 23 de Septiembre</div>
+                <h2 class="day-headline">Día Libre & Greenwich Village Local By Night</h2>
+            </div>
             
-            <div class="time-block">
-                <div class="time-header">MAÑANA Y TARDE</div>
-                <div class="card">
-                    <h4>Día Libre sin horarios</h4>
-                    <p>Día completamente abierto para disfrutar Nueva York a su propio ritmo. Opciones según cómo se sientan:</p>
-                    <ul>
-                        <li>Volver al lugar que más les haya gustado durante el viaje.</li>
-                        <li>Realizar compras de último momento.</li>
-                        <li>Descansar en Bryant Park o Central Park.</li>
-                        <li>Recorrer alguna atracción pendiente o museos.</li>
-                        <li>Repetir algún paseo favorito o probar suerte en la lotería/puesto de TKTS para una función de Broadway.</li>
-                        <li>Descubrir algún rincón recomendado sobre la marcha.</li>
-                    </ul>
-                    <p><strong>Objetivo del día:</strong> disfrutar la ciudad sin mirar el reloj.</p>
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana y Tarde</div>
+                    <div class="card">
+                        <h4>Día Libre sin horarios</h4>
+                        <p>Día completamente abierto para disfrutar Nueva York a su propio ritmo. Opciones:</p>
+                        <ul>
+                            <li>Volver al lugar que más les haya gustado durante el viaje.</li>
+                            <li>Realizar compras de último momento.</li>
+                            <li>Descansar en Bryant Park o Central Park.</li>
+                            <li>Recorrer alguna atracción pendiente o museos.</li>
+                            <li>Repetir algún paseo favorito o probar suerte en la lotería/puesto de TKTS para Broadway.</li>
+                            <li>Descubrir algún rincón recomendado sobre la marcha.</li>
+                        </ul>
+                        <p class="mt-2"><strong>Objetivo del día:</strong> disfrutar la ciudad sin mirar el reloj.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / NOCHE</div>
-                <div class="card">
-                    <h4>Ambiente Local en Washington Square & West Village</h4>
-                    <ul>
-                        <li><strong>06:00 PM - Parque Washington Square:</strong>
-                            <ul>
-                                <li>Salen del hotel desde 42 St - Estación terminal de autobuses de la Autoridad Portuaria en el subte (Línea A, C o E) hasta West 4 St - Estación Washington Sq.</li>
-                                <li>Tarde de desconexión en Parque de la Plaza Washington: se sientan cerca de la fuente central o el arco triunfal a ver la vida social del barrio, escuchando a los pianistas y músicos callejeros.</li>
-                            </ul>
-                            <a href="https://maps.google.com/?q=Hotel+to+Washington+Square+Park" target="_blank" class="link-box">Enlace de ruta en Google Maps: Traslado en subte del Hotel a Washington Square Park</a>
-                        </li>
-                        <li><strong>06:45 PM - Paseo a pie por las calles residenciales y bohemias:</strong>
-                            <ul>
-                                <li>Camina tranquilamente por Calle MacDougal y Calle Bleecker, repletas de restaurantes locales, bodegas de vino, librerías y bares de comedia.</li>
-                                <li>Se desvían hacia calles íntimas y arboladas como Mineta Lane, San Carmín y Cornelia Santa, características de la arquitectura de casas de piedra rojiza iluminadas por faroles.</li>
-                            </ul>
-                        </li>
-                        <li><strong>07:30 PM - Hora del aperitivo:</strong>
-                            <ul>
-                                <li>Parada para tomar una cerveza artesanal o un cóctel de bienvenida en un pub tradicional de barrio como tigre ciego (281 Bleecker St) o la buhardilla (296 Bleecker St).</li>
-                            </ul>
-                            <a href="https://maps.google.com/?q=Washington+Square+Park+to+Blind+Tiger" target="_blank" class="link-box">Enlace de ruta en Google Maps: Recorrido a pie desde Washington Square Park por MacDougal St, Cornelia St y Bleecker St a Blind Tiger</a>
-                        </li>
-                    </ul>
+                <div class="time-block">
+                    <div class="time-label">Tarde / Noche</div>
+                    <div class="card">
+                        <h4>Ambiente Local en Washington Square & West Village</h4>
+                        <ul>
+                            <li><strong>06:00 PM - Parque Washington Square:</strong>
+                                <ul>
+                                    <li>Salen del hotel desde 42 St - Estación terminal de autobuses de la Autoridad Portuaria en el subte (Línea A, C o E) hasta West 4 St - Estación Washington Sq.</li>
+                                    <li>Tarde de desconexión en Parque de la Plaza Washington: se sientan cerca de la fuente central o el arco triunfal a ver la vida social del barrio, escuchando a los pianistas y músicos callejeros.</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=Hotel+to+Washington+Square+Park" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🌳</div>
+                                    <span class="link-text">Traslado en subte del Hotel a Washington Square Park</span>
+                                </a>
+                            </li>
+                            <li><strong>06:45 PM - Paseo por las calles residenciales:</strong>
+                                <ul>
+                                    <li>Camina tranquilamente por Calle MacDougal y Calle Bleecker, repletas de restaurantes locales, bodegas, librerías y bares de comedia.</li>
+                                    <li>Se desvían hacia calles íntimas y arboladas como Mineta Lane, San Carmín y Cornelia Santa (arquitectura de casas de piedra rojiza iluminadas por faroles).</li>
+                                </ul>
+                            </li>
+                            <li><strong>07:30 PM - Hora del aperitivo:</strong>
+                                <ul>
+                                    <li>Parada para tomar una cerveza artesanal o cóctel en un pub tradicional como tigre ciego (281 Bleecker St) o la buhardilla (296 Bleecker St).</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=Washington+Square+Park+to+Blind+Tiger" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🍻</div>
+                                    <span class="link-text">Recorrido a pie por MacDougal St, Cornelia St y Bleecker St a Blind Tiger</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="time-block">
-                <div class="time-header">NOCHE</div>
-                <div class="card">
-                    <h4>Cena de Despedida & Jazz en Vivo en Arthur's Tavern</h4>
-                    <ul>
-                        <li><strong>08:15 PM - Cena informal de despedida en John's of Bleecker Street:</strong>
-                            <ul>
-                                <li>Cenan en John's de la calle Bleecker (278 Bleecker St), la legendaria pizzería a horno de carbón de 1929 muy concurrida por los locales, para celebrar sus 25 años de casados en un ambiente cálido y distendido.</li>
-                            </ul>
-                        </li>
-                        <li><strong>09:30 PM - Noche de Jazz y cervezas en Arthur's Tavern:</strong>
-                            <ul>
-                                <li>Viven la noche neoyorquina en La taberna de Arturo (57 Grove St), histórico bar de jazz y blues funcionando desde 1937, disfrutando la música en vivo en la barra sin cobro de entrada.</li>
-                            </ul>
-                            <a href="https://maps.google.com/?q=Blind+Tiger+to+Johns+of+Bleecker+St+and+Arthurs+Tavern" target="_blank" class="link-box">Enlace de ruta en Google Maps: De Blind Tiger a John's of Bleecker St y Arthur's Tavern</a>
-                        </li>
-                        <li><strong>10:45 PM - Regreso al Hotel:</strong>
-                            <ul>
-                                <li>Caminan de regreso hacia la estación West 4 St - Estación Washington Sq y toman el subte (Línea A, C o E dirección Zona residencial) hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria para volver al hotel.</li>
-                            </ul>
-                            <a href="https://maps.google.com/?q=Arthurs+Tavern+to+Hotel" target="_blank" class="link-box">Enlace de ruta en Google Maps: Regreso desde Arthur's Tavern por West 4 St Station al Hotel</a>
-                        </li>
-                    </ul>
-                    <div class="card note-card" style="margin-top: 15px;">
-                        <p><strong>Nota:</strong> Recordar llevar los pasaportes físicos para el ingreso a bares y la compra de bebidas alcohólicas.</p>
-                        <p><em>++ Filosofía del día: "Hoy no venimos a conocer Nueva York. Hoy venimos a vivir la noche de Nueva York."</em></p>
+                <div class="time-block">
+                    <div class="time-label">Noche</div>
+                    <div class="card">
+                        <h4>Cena de Despedida & Jazz en Vivo en Arthur's Tavern</h4>
+                        <ul>
+                            <li><strong>08:15 PM - Cena informal de despedida:</strong> Cenan en John's de la calle Bleecker (278 Bleecker St), la legendaria pizzería a horno de carbón de 1929 muy concurrida por locales, para celebrar sus 25 años de casados.</li>
+                            <li><strong>09:30 PM - Noche de Jazz y cervezas:</strong> Viven la noche neoyorquina en La taberna de Arturo (57 Grove St), histórico bar de jazz y blues funcionando desde 1937.
+                                <a href="https://maps.google.com/?q=Blind+Tiger+to+Johns+of+Bleecker+St+and+Arthurs+Tavern" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">🎷</div>
+                                    <span class="link-text">De Blind Tiger a John's of Bleecker St y Arthur's Tavern</span>
+                                </a>
+                            </li>
+                            <li><strong>10:45 PM - Regreso al Hotel:</strong>
+                                Caminan de regreso hacia la estación West 4 St - Estación Washington Sq y toman el subte (Línea A, C o E) hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria.
+                                <a href="https://maps.google.com/?q=Arthurs+Tavern+to+Hotel" target="_blank" class="action-link mt-2">
+                                    <div class="icon-box">🚇</div>
+                                    <span class="link-text">Regreso desde Arthur's Tavern por West 4 St Station al Hotel</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card card-highlight mt-2">
+                        <p style="color: var(--text-main); font-style: normal; margin-bottom: 8px;"><strong>Nota:</strong> Recordar llevar los pasaportes físicos para el ingreso a bares y la compra de bebidas alcohólicas.</p>
+                        <p>✨ "Hoy no venimos a conocer Nueva York. Hoy venimos a vivir la noche de Nueva York."</p>
                     </div>
                 </div>
             </div>
@@ -748,43 +1335,52 @@
 
         <!-- DÍA 10 -->
         <div id="view-day-10" class="view-section">
-            <h2 class="day-title">DÍA 10: Jueves 24 de Septiembre – ÚLTIMAS HORAS EN MANHATTAN & VUELO DE REGRESO</h2>
-            
-            <div class="time-block">
-                <div class="time-header">MAÑANA</div>
-                <div class="card">
-                    <h4>Check-out & Guardado de Equipaje</h4>
-                    <ul>
-                        <li><strong>11:30 AM - Check-out en el Hotel:</strong> Hacen el check-out en Candlewood Suites New York City- Times Square by IHG (339 W 39th St) y dejan las valijas guardadas en la consigna del lobby (almacenamiento de equipaje).</li>
-                        <li><strong>12:00 PM - Tarde libre de despedida por Midtown:</strong> Paseo relajado por Bryant Park, compras de último momento por la 5th Avenue o un almuerzo tranquilo en la zona sin mirar el reloj.</li>
-                    </ul>
-                </div>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Jueves 24 de Septiembre</div>
+                <h2 class="day-headline">Últimas Horas en Manhattan & Vuelo de Regreso</h2>
             </div>
+            
+            <div class="timeline">
+                <div class="time-block">
+                    <div class="time-label">Mañana</div>
+                    <div class="card">
+                        <h4>Check-out & Guardado de Equipaje</h4>
+                        <ul>
+                            <li><strong>11:30 AM - Check-out en el Hotel:</strong> Hacen el check-out en Candlewood Suites New York City- Times Square by IHG (339 W 39th St) y dejan las valijas guardadas en la consigna del lobby (almacenamiento de equipaje).</li>
+                            <li><strong>12:00 PM - Tarde libre de despedida por Midtown:</strong> Paseo relajado por Bryant Park, compras de último momento por la 5th Avenue o un almuerzo tranquilo en la zona sin mirar el reloj.</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="time-block">
-                <div class="time-header">TARDE / NOCHE</div>
-                <div class="card">
-                    <h4>Traslado a JFK (Subte E + AirTrain)</h4>
-                    <ul>
-                        <li><strong>05:15 PM - Regreso al Hotel:</strong> Vuelven al hotel a retirar las valijas de la consigna, reorganizar los bolsos de mano y usar los sanitarios.</li>
-                        <li><strong>05:45 PM - Salida hacia la estación de subte:</strong> Caminan 2 cuadras desde el hotel (por 39th St hacia la 8th Ave) hasta el acceso de la estación 42 St - Port Authority Bus Terminal Station (en 8th Ave y 40th St o 42nd St).</li>
-                        <li><strong>06:00 PM - Subte Línea E + AirTrain JFK:</strong> 
-                            <ul>
-                                <li>Abordan la Línea E (dirección Uptown y Queens/Centro de Jamaica) hasta la estación Sutphin Blvd - Archer Av - Estación del aeropuerto JFK (aprox. 40-45 minutos de viaje).</li>
-                                <li>Al bajar del subte, siguen las señales hacia el Tren aéreo JFK. Pasan los molinetes (se paga con tarjeta sin contacto u OMNY, USD $8.50 por persona) y suben al tren automatizado que los deja directamente en la terminal de su aerolínea.</li>
-                            </ul>
-                            <a href="https://maps.google.com/?q=Hotel+to+JFK+Airport+via+E+Train+and+AirTrain" target="_blank" class="link-box">Enlace de ruta en Google Maps: Del Hotel a la Terminal del Aeropuerto JFK via Subte E y AirTrain</a>
-                        </li>
-                        <li><strong>07:00 PM / 07:15 PM - Arribo a la Terminal de JFK:</strong>
-                            <ul>
-                                <li>Arriban con más de 4 horas de anticipación.</li>
-                                <li>Realizan el despacho de equipaje en mostrador, el paso por controles de seguridad TSA con total tranquilidad y disponen de tiempo de sobra para cenar algo antes de embarcar.</li>
-                            </ul>
-                        </li>
-                        <li><strong>11:20 PM - Despegue del vuelo de regreso a casa.</strong></li>
-                    </ul>
-                    <div class="card note-card" style="margin-top: 15px;">
-                        <p><em>Filosofía del día: "Las valijas vuelven más pesadas, pero nosotros volvemos más livianos. ¡Buen viaje de regreso!"</em></p>
+                <div class="time-block">
+                    <div class="time-label">Tarde / Noche</div>
+                    <div class="card">
+                        <h4>Traslado a JFK (Subte E + AirTrain)</h4>
+                        <ul>
+                            <li><strong>05:15 PM - Regreso al Hotel:</strong> Vuelven al hotel a retirar las valijas de la consigna, reorganizar los bolsos de mano y usar los sanitarios.</li>
+                            <li><strong>05:45 PM - Salida hacia la estación de subte:</strong> Caminan 2 cuadras desde el hotel (por 39th St hacia la 8th Ave) hasta el acceso de la estación 42 St - Port Authority Bus Terminal Station (en 8th Ave y 40th St o 42nd St).</li>
+                            <li><strong>06:00 PM - Subte Línea E + AirTrain JFK:</strong> 
+                                <ul>
+                                    <li>Abordan la Línea E (dirección Uptown y Queens/Centro de Jamaica) hasta la estación Sutphin Blvd - Archer Av - Estación del aeropuerto JFK (aprox. 40-45 minutos).</li>
+                                    <li>Al bajar, siguen las señales hacia el Tren aéreo JFK. Pasan los molinetes (se paga con tarjeta sin contacto u OMNY, USD $8.50) y suben al tren automatizado hacia la terminal de su aerolínea.</li>
+                                </ul>
+                                <a href="https://maps.google.com/?q=Hotel+to+JFK+Airport+via+E+Train+and+AirTrain" target="_blank" class="action-link mt-2 mb-4">
+                                    <div class="icon-box">✈️</div>
+                                    <span class="link-text">Del Hotel a la Terminal del Aeropuerto JFK via Subte E y AirTrain</span>
+                                </a>
+                            </li>
+                            <li><strong>07:00 PM / 07:15 PM - Arribo a la Terminal de JFK:</strong>
+                                <ul>
+                                    <li>Arriban con más de 4 horas de anticipación.</li>
+                                    <li>Realizan el despacho de equipaje en mostrador, el paso por controles de seguridad TSA con total tranquilidad y disponen de tiempo de sobra para cenar algo antes de embarcar.</li>
+                                </ul>
+                            </li>
+                            <li><strong>11:20 PM - Despegue del vuelo de regreso a casa.</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card card-highlight mt-2">
+                        <p>🛫 "Las valijas vuelven más pesadas, pero nosotros volvemos más livianos. ¡Buen viaje de regreso!"</p>
                     </div>
                 </div>
             </div>
@@ -792,37 +1388,18 @@
 
     </div>
 
-    <!-- Menú Desplegable -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
-        <div class="menu-content" onclick="event.stopPropagation()">
-            <h2>Itinerario</h2>
-            <button class="day-list-btn" onclick="goToDay('home')">🏠 Inicio</button>
-            <button class="day-list-btn" onclick="goToDay(1)">Día 1: Llegada y Compras</button>
-            <button class="day-list-btn" onclick="goToDay(2)">Día 2: Bajo Manhattan</button>
-            <button class="day-list-btn" onclick="goToDay(3)">Día 3: Midtown Pass</button>
-            <button class="day-list-btn" onclick="goToDay(4)">Día 4: Central Park & Museos</button>
-            <button class="day-list-btn" onclick="goToDay(5)">Día 5: Chelsea & SoHo</button>
-            <button class="day-list-btn" onclick="goToDay(6)">Día 6: 5th Ave & SUMMIT</button>
-            <button class="day-list-btn" onclick="goToDay(7)">Día 7: Contrastes & Chinatown</button>
-            <button class="day-list-btn" onclick="goToDay(8)">Día 8: Brooklyn & Staten Island</button>
-            <button class="day-list-btn" onclick="goToDay(9)">Día 9: Día Libre & Noche</button>
-            <button class="day-list-btn" onclick="goToDay(10)">Día 10: Despedida y Vuelo</button>
-            <button class="close-menu" onclick="toggleMenu()">Cerrar Menú</button>
-        </div>
-    </div>
-
-    <!-- Navegación Inferior -->
-    <nav class="nav-bottom">
-        <button class="nav-btn" id="btn-prev" onclick="prevDay()">
-            <span class="nav-icon">◀</span>
+    <!-- IOS STYLE BOTTOM TAB BAR -->
+    <nav class="bottom-tab-bar">
+        <button class="tab-btn" id="btn-prev" onclick="prevDay()">
+            <span class="tab-icon">◀</span>
             Anterior
         </button>
-        <button class="nav-btn active" id="btn-home" onclick="goToDay('home')">
-            <span class="nav-icon">🏠</span>
+        <button class="tab-btn active" id="btn-home" onclick="goToDay('home')">
+            <span class="tab-icon">🏠</span>
             Inicio
         </button>
-        <button class="nav-btn" id="btn-next" onclick="nextDay()">
-            <span class="nav-icon">▶</span>
+        <button class="tab-btn" id="btn-next" onclick="nextDay()">
+            <span class="tab-icon">▶</span>
             Siguiente
         </button>
     </nav>
@@ -831,51 +1408,54 @@
         let currentDay = 'home';
         
         function hideAllViews() {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.pill').forEach(el => {
+                el.classList.remove('active');
+            });
         }
 
-        function updateNavButtons() {
+        function updateNavState() {
             const btnPrev = document.getElementById('btn-prev');
             const btnNext = document.getElementById('btn-next');
             const btnHome = document.getElementById('btn-home');
 
+            // Bottom Nav State
             if (currentDay === 'home') {
-                btnPrev.classList.add('disabled');
-                btnNext.classList.remove('disabled');
+                btnPrev.disabled = true;
+                btnNext.disabled = false;
                 btnHome.classList.add('active');
-                document.getElementById('header-title').innerText = "Mi Viaje a NY";
             } else {
                 btnHome.classList.remove('active');
-                document.getElementById('header-title').innerText = "Día " + currentDay;
-                
-                if (currentDay === 1) {
-                    btnPrev.classList.remove('disabled');
-                } else {
-                    btnPrev.classList.remove('disabled');
-                }
+                btnPrev.disabled = false;
+                btnNext.disabled = (currentDay === 10);
+            }
 
-                if (currentDay === 10) {
-                    btnNext.classList.add('disabled');
-                } else {
-                    btnNext.classList.remove('disabled');
-                }
+            // Top Pill State & Auto-Scroll
+            const activePill = document.getElementById(`pill-${currentDay}`);
+            if (activePill) {
+                activePill.classList.add('active');
+                // Center the active pill in the horizontal scroller
+                activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
         }
 
         function goToDay(day) {
+            if (currentDay === day) return; // Prevent re-triggering current view
+            
             hideAllViews();
             currentDay = day;
             
-            if (day === 'home') {
-                document.getElementById('view-home').classList.add('active');
-            } else {
-                document.getElementById('view-day-' + day).classList.add('active');
+            const viewId = (day === 'home') ? 'view-home' : `view-day-${day}`;
+            const targetView = document.getElementById(viewId);
+            
+            if(targetView) {
+                targetView.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             
-            updateNavButtons();
-            toggleMenu(false);
-            window.scrollTo(0, 0);
+            updateNavState();
         }
 
         function prevDay() {
@@ -895,22 +1475,8 @@
             }
         }
 
-        function toggleMenu(forceClose = false) {
-            const menu = document.getElementById('menuOverlay');
-            if (forceClose || menu.style.display === 'flex') {
-                menu.style.display = 'none';
-            } else {
-                menu.style.display = 'flex';
-            }
-        }
-
-        function closeMenu(e) {
-            if(e.target.id === 'menuOverlay') {
-                toggleMenu(true);
-            }
-        }
-
-        updateNavButtons();
+        // Initialize state
+        updateNavState();
     </script>
 </body>
 </html>
