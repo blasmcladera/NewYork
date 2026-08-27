@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
     <link rel="manifest" href="manifest.json">
-
     <title>NY Travel Guide Premium</title>
     <meta name="theme-color" content="#0F172A">
     <style>
@@ -30,6 +28,11 @@
             --nav-height: 85px;
         }
 
+        html {
+            font-size: 16px; /* Base font size, will be modified by JS */
+            transition: font-size 0.2s ease-out; /* Smooth transition when resizing */
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -42,7 +45,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 100px; /* Space for bottom nav */
+            padding-bottom: 110px; /* Space for bottom nav */
             overscroll-behavior-y: none;
         }
 
@@ -81,6 +84,35 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* --- FONT SIZE CONTROLS --- */
+        .font-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .font-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-light);
+            color: var(--primary-dark);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .font-btn:active {
+            transform: scale(0.92);
+            background: var(--bg-color);
         }
 
         /* Horizontal Scroll Day Selector */
@@ -148,67 +180,72 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- HOME VIEW (HERO) --- */
-        .hero-card {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #1E3A8A 100%);
-            border-radius: var(--radius-lg);
-            padding: 40px 30px;
-            color: white;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+        /* --- HOME GRID (DAYS LIST) --- */
+        .days-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .day-card-btn {
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            text-align: left;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
 
-        .hero-card::after {
+        .day-card-btn::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0.5;
-            pointer-events: none;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
-        .hero-title {
-            font-size: 2.5rem;
+        .day-card-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .day-card-btn:active::before {
+            opacity: 1;
+        }
+
+        .day-card-title {
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-            line-height: 1.1;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .hero-dates {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 30px;
+        .day-card-date {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #92400E;
+            background: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 12px;
             letter-spacing: 0.5px;
         }
 
-        .btn-primary {
-            background-color: var(--accent);
-            color: var(--primary-dark);
-            border: none;
-            padding: 18px 36px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border-radius: 100px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.96);
+        .day-card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            padding-right: 20px;
         }
 
         /* --- DAY VIEW & TIMELINE --- */
@@ -359,8 +396,9 @@
 
         .icon-box {
             background: #FFFFFF;
-            width: 40px; height: 40px;
-            border-radius: 10px;
+            width: 2.5rem; 
+            height: 2.5rem;
+            border-radius: 0.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -382,15 +420,15 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
             justify-content: space-evenly;
-            padding: 12px 10px 24px; /* Extra bottom padding for iOS safe area */
+            padding: 12px 10px 24px;
             z-index: 100;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.04);
         }
 
         .tab-btn {
@@ -403,9 +441,11 @@
             color: var(--text-muted);
             font-size: 0.75rem;
             font-weight: 600;
-            width: 80px;
+            flex: 1; /* Adaptable width for scaling fonts */
+            min-width: 60px;
+            max-width: 100px;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: color 0.2s, opacity 0.2s;
         }
 
         .tab-icon {
@@ -425,8 +465,8 @@
         }
 
         .tab-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Utilities */
@@ -438,11 +478,20 @@
             .app-container {
                 padding: 40px;
             }
-            .hero-title {
-                font-size: 3.5rem;
-            }
             .day-headline {
                 font-size: 2.5rem;
+            }
+            .days-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .day-card-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+                border-color: rgba(0,0,0,0.08);
+            }
+            .day-card-btn:hover::before {
+                opacity: 1;
             }
             .card {
                 padding: 32px;
@@ -477,6 +526,11 @@
                 <div class="header-subtitle">Sept 15 - Sept 24</div>
                 <h1 class="header-title">🗽 NY Guide</h1>
             </div>
+            <!-- Font Size Controls -->
+            <div class="font-controls">
+                <button class="font-btn" onclick="changeFontSize(-2)" aria-label="Achicar tamaño de texto">A−</button>
+                <button class="font-btn" onclick="changeFontSize(2)" aria-label="Agrandar tamaño de texto">A+</button>
+            </div>
         </div>
         <div class="day-scroller" id="dayScroller">
             <button class="pill active" id="pill-home" onclick="goToDay('home')">Inicio</button>
@@ -496,16 +550,53 @@
     <!-- MAIN APP CONTAINER -->
     <div class="app-container">
         
-        <!-- PANTALLA DE INICIO -->
+        <!-- PANTALLA DE INICIO (LISTADO DE DÍAS) -->
         <div id="view-home" class="view-section active">
-            <div class="hero-card">
-                <h2 class="hero-title">Nueva York</h2>
-                <div class="hero-dates">10 Días de Viaje</div>
-                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; font-weight: 500;">
-                    15 de Septiembre al 24 de Septiembre
-                </p>
-                <button class="btn-primary" onclick="goToDay(1)">
-                    Comenzar Aventura <span>✈️</span>
+            <div class="day-header">
+                <div class="header-subtitle mb-4">Nueva York - 10 Días</div>
+                <h2 class="day-headline">🗽 Itinerario del Viaje</h2>
+            </div>
+            
+            <div class="days-grid">
+                <button class="day-card-btn" onclick="goToDay(1)">
+                    <div class="day-card-title">Día 1 <span class="day-card-date">15 Sept</span></div>
+                    <div class="day-card-desc">Llegada (JFK), Compras en New Jersey y Noche en Times Square</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(2)">
+                    <div class="day-card-title">Día 2 <span class="day-card-date">16 Sept</span></div>
+                    <div class="day-card-desc">Bajo Manhattan, Liberty Island y Distrito Financiero</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(3)">
+                    <div class="day-card-title">Día 3 <span class="day-card-date">17 Sept</span></div>
+                    <div class="day-card-desc">Midtown Manhattan Ultra Pass Optimization (Día 2 NY Pass)</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(4)">
+                    <div class="day-card-title">Día 4 <span class="day-card-date">18 Sept</span></div>
+                    <div class="day-card-desc">Upper East Side Museums, Central Park & New York Illuminated Tour</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(5)">
+                    <div class="day-card-title">Día 5 <span class="day-card-date">19 Sept</span></div>
+                    <div class="day-card-desc">Hudson Yards, High Line, Chelsea, Greenwich Village, SoHo & TriBeCa</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(6)">
+                    <div class="day-card-title">Día 6 <span class="day-card-date">20 Sept</span></div>
+                    <div class="day-card-desc">Midtown, Central Park, 5th Ave & SUMMIT One Vanderbilt</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(7)">
+                    <div class="day-card-title">Día 7 <span class="day-card-date">21 Sept</span></div>
+                    <div class="day-card-desc">Tour Contrastes, Canal St, Chinatown, San Gennaro y Nolita</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(8)">
+                    <div class="day-card-title">Día 8 <span class="day-card-date">22 Sept</span></div>
+                    <div class="day-card-desc">East River, Roosevelt Island, Williamsburg, DUMBO & Staten Island</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(9)">
+                    <div class="day-card-title">Día 9 <span class="day-card-date">23 Sept</span></div>
+                    <div class="day-card-desc">Día Libre & Greenwich Village Local By Night</div>
+                </button>
+                <button class="day-card-btn" onclick="goToDay(10)">
+                    <div class="day-card-title">Día 10 <span class="day-card-date">24 Sept</span></div>
+                    <div class="day-card-desc">Últimas Horas en Manhattan & Vuelo de Regreso</div>
                 </button>
             </div>
         </div>
@@ -529,7 +620,7 @@
                             <li><strong>Subway (Línea E):</strong> Desde la misma estación de Jamaica, seguí las indicaciones para conectar con el Metro de Nueva York. Tenés que tomar la Línea E con sentido hacia Manhattan con destino Centro (hacia el centro).</li>
                             <li><strong>Llegada:</strong> Te bajás en la estación 42 St - Port Authority Bus Terminal. Desde los andenes, salís a la superficie y caminás únicamente dos cuadras hacia el sur por la 9na avenida hasta llegar a la calle W 39th St, donde se encuentra el hotel. Dejan las valijas en custodia en el hotel.</li>
                         </ul>
-                        <a href="https://maps.google.com/?q=JFK+Airport+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="action-link">
+                        <a href="https://www.google.com/maps/dir/John+F.+Kennedy+International+Airport+(JFK),+Queens,+NY+11430/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/data=!4m14!4m13!1m5!1m1!19sChIJb8vQ69bFwokR_AieCHY66K4!2m2!1d-73.7781391!2d40.6413111!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!3e3" target="_blank" class="action-link">
                             <div class="icon-box">🗺️</div>
                             <span class="link-text">Ruta en Google Maps: JFK Airport hasta Candlewood Suites via AirTrain y Línea E</span>
                         </a>
@@ -547,7 +638,7 @@
                             <li><strong>Compra de pasajes:</strong> Adentro de la terminal, buscan las boleterías automáticas o de atención de Tránsito de Nueva Jersey (Tránsito de Nueva Jersey). Tienen que comprar un pasaje Ida y vuelta (Ida y vuelta) para el colectivo de la Línea 111.</li>
                             <li><strong>El viaje:</strong> Suben a la plataforma que les indique el boleto para la Línea 111 (empresa Tránsito de Nueva Jersey). Este colectivo va directo por autopista y los deja exactamente en la entrada de The Mills at Jersey Gardens.</li>
                         </ol>
-                        <a href="https://maps.google.com/?q=Port+Authority+Bus+Terminal+to+The+Mills+at+Jersey+Gardens" target="_blank" class="action-link">
+                        <a href="https://www.google.com/maps/dir/Port+Authority+Bus+Terminal,+8th+Ave,+New+York,+NY/The+Mills+at+Jersey+Gardens,+651+Kapkowski+Rd,+Elizabeth,+NJ+07201/data=!4m14!4m13!1m5!1m1!19sChIJm08T661ZwokR89YpL9D_bM0!2m2!1d-73.9904297!2d40.7568195!1m5!1m1!19sChIJX8O9-V5Vw4kR3J2G0B_P6wM!2m2!1d-74.1704251!2d40.6622415!3e3" target="_blank" class="action-link">
                             <div class="icon-box">🛍️</div>
                             <span class="link-text">Ruta en Google Maps: Port Authority Bus Terminal a The Mills at Jersey Gardens</span>
                         </a>
@@ -565,7 +656,7 @@
                             <li><strong>Llegada:</strong> Se bajan en la parada final dentro de Port Authority Bus Terminal.</li>
                             <li><strong>Registrarse:</strong> Caminan las dos cuadras de vuelta hacia el Candlewood Suites Nueva York - Times Square por IHG. Hacen el ingreso oficial, les dan la llave de la habitación, guardan todas las bolsas de las compras, se pegan una ducha rápida y descansan un rato antes de salir a caminar.</li>
                         </ul>
-                        <a href="https://maps.google.com/?q=The+Mills+at+Jersey+Gardens+to+Candlewood+Suites+New+York+Times+Square" target="_blank" class="action-link">
+                        <a href="https://www.google.com/maps/dir/The+Mills+at+Jersey+Gardens,+651+Kapkowski+Rd,+Elizabeth,+NJ+07201/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/data=!4m14!4m13!1m5!1m1!19sChIJX8O9-V5Vw4kR3J2G0B_P6wM!2m2!1d-74.1704251!2d40.6622415!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!3e3" target="_blank" class="action-link">
                             <div class="icon-box">🏨</div>
                             <span class="link-text">Ruta en Google Maps: The Mills at Jersey Gardens de regreso al hotel</span>
                         </a>
@@ -580,13 +671,13 @@
                         <p>Todo este bloque final se hace caminando y son distancias muy cortas:</p>
                         <ol>
                             <li><strong>Paseo al Atardecer:</strong> Salen del hotel y caminan hacia el noreste unas 4 cuadras. En menos de 10 minutos van a estar parados en el centro de Times Square justo cuando se empiezan a encender todas las pantallas gigantes.
-                                <a href="https://maps.google.com/?q=Candlewood+Suites+New+York+Times+Square+to+Times+Square" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/Times+Square,+New+York,+NY/data=!4m14!4m13!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!1m5!1m1!19sChIJm08T661ZwokR89YpL9D_bM0!2m2!1d-73.9904297!2d40.7568195!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🚶</div>
                                     <span class="link-text">Ruta en Google Maps: Caminar desde el hotel hasta Times Square</span>
                                 </a>
                             </li>
                             <li><strong>Compra de la Cena:</strong> Cuando tengan hambre, caminan 3 cuadras hacia el este (en dirección a la 6ta Avenida) hasta llegar a Whole Foods Market, justo frente a Parque Bryant. Suben al segundo piso, se arman las bandejas en el buffet caliente por peso (tienen excelentes opciones de comida casera, carnes, pastas y ensaladas) o compran unas porciones de pizza, y pasan por las cajas.
-                                <a href="https://maps.google.com/?q=Times+Square+to+Whole+Foods+Market+Bryant+Park" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Times+Square,+New+York,+NY/Whole+Foods+Market,+1095+6th+Ave,+New+York,+NY+10036/data=!4m14!4m13!1m5!1m1!19sChIJm08T661ZwokR89YpL9D_bM0!2m2!1d-73.9904297!2d40.7568195!1m5!1m1!19sChIJvS7V-FlZwokR6Yp_mC38pE0!2m2!1d-73.9856554!2d40.7484445!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🍕</div>
                                     <span class="link-text">Ruta en Google Maps: Caminar desde Times Square hasta Whole Foods Market</span>
                                 </a>
@@ -613,7 +704,7 @@
                         <h4>Early Ferry & Liberty Island</h4>
                         <ul>
                             <li><strong>07:30 AM - Viaje hacia el muelle:</strong> Salen del hotel y caminan 4 cuadras hacia el este por W 39th St hasta la Estación Times Square-42 St. Ahí toman el Metro (Línea 1 color rojo, con sentido Ferry Centro / Sur) y bajan en la última parada, South Ferry Terminal. Al salir de la estación, están directamente en Battery Park.
-                                <a href="https://maps.google.com/?q=Candlewood+Suites+to+Times+Square-42+St+Station" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/Times+Square+-+42+St,+New+York,+NY/data=!4m14!4m13!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!1m5!1m1!19sChIJm08T661ZwokR89YpL9D_bM0!2m2!1d-73.986348!2d40.755493!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🚇</div>
                                     <span class="link-text">Ruta: Caminata de Candlewood Suites a Times Square-42 St Station</span>
                                 </a>
@@ -632,7 +723,7 @@
                         <ul>
                             <li><strong>12:00 PM - PASE ATRACCIÓN 2 (Optimización Sorpresa):</strong> Caminan unas pocas cuadras desde el muelle hacia Museo Taberna Fraunces. Recorren este histórico edificio de 1762 clave en la independencia americana.</li>
                             <li><strong>01:00 PM - Almuerzo:</strong> Almuerzan algo rápido al paso por la zona del Distrito financiero para llegar con tiempo al punto de encuentro.
-                                <a href="https://maps.google.com/?q=Battery+Park+to+Fraunces+Tavern+Museum" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Battery+Park,+New+York,+NY/Fraunces+Tavern,+54+Pearl+St,+New+York,+NY+10004/data=!4m14!4m13!1m5!1m1!19sChIJ689_96pZwokR_XjZ7B5G5eU!2m2!1d-74.0160295!2d40.7032775!1m5!1m1!19sChIJ8_Zt6alZwokR3Ym1_m6pEqk!2m2!1d-74.0110484!2d40.7034177!3e2" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🍔</div>
                                     <span class="link-text">Ruta: Caminata desde Battery Park a Fraunces Tavern Museum</span>
                                 </a>
@@ -663,7 +754,7 @@
                             <li><strong>06:30 PM - PASE ATRACCIÓN 4:</strong> Cruzan directo al edificio de al lado para subir a One World Observarory, el mirador más alto de la zona, justo a la hora del atardecer para ver cómo se encienden las luces de Manhattan, Brooklyn y el río.</li>
                             <li><strong>20:30 - Cena:</strong> Cenan algo en los alrededores del World Trade Center antes de tomar el Metro de regreso al hotel.</li>
                             <li><strong>Regreso al Hotel:</strong> Ingresan a la estación Estación del World Trade Center, toman la Línea E (Zona residencial) hasta 42 St - Port Autority Bus Terminal. Salen y caminan las dos cuadras correspondientes hasta el hotel.
-                                <a href="https://maps.google.com/?q=World+Trade+Center+to+Candlewood+Suites+via+Line+E" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/World+Trade+Center,+50+Church+Street,+New+York,+NY/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/data=!4m14!4m13!1m5!1m1!19sChIJfV5RORpawokRSWL6QFAZFI8!2m2!1d-74.0110779!2d40.7113396!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!3e3" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🚇</div>
                                     <span class="link-text">Ruta: Regreso desde World Trade Center hasta Candlewood Suites via Line E</span>
                                 </a>
@@ -689,19 +780,19 @@
                         <ul>
                             <li><strong>08:15 AM - Desayuno:</strong> Compran para llevar en Ess-a-Bagel.</li>
                             <li><strong>09:00 AM - ATRACCIÓN DEL PASE 1:</strong> Suben a Top off The Rock en el primer turno de la mañana.
-                                <a href="https://maps.google.com/?q=Hotel+to+Top+of+the+Rock" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/Top+of+the+Rock,+30+Rockefeller+Plaza,+New+York,+NY+10112/data=!4m14!4m13!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!1m5!1m1!19sChIJmZ6FClpZwokR9jID-b7R_PM!2m2!1d-73.9791891!2d40.7587402!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">📸</div>
                                     <span class="link-text">Del Hotel a Top of the Rock caminando (13 cuadras)</span>
                                 </a>
                             </li>
                             <li><strong>10:15 AM - ATRACCIÓN DEL PASE 2:</strong> Salen y caminan solo dos cuadras hacia el norte por 5ta avenida hasta ingresar a El Museo de Arte Moderno (MoMA).
-                                <a href="https://maps.google.com/?q=Top+of+the+Rock+to+MoMA" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Top+of+the+Rock,+30+Rockefeller+Plaza,+New+York,+NY+10112/The+Museum+of+Modern+Art,+11+W+53rd+St,+New+York,+NY+10019/data=!4m14!4m13!1m5!1m1!19sChIJmZ6FClpZwokR9jID-b7R_PM!2m2!1d-73.9791891!2d40.7587402!1m5!1m1!19sChIJ87X6w6VZwokR-j53w-wG-bI!2m2!1d-73.9776216!2d40.7614327!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🎨</div>
                                     <span class="link-text">De Top of the Rock a MoMA caminando</span>
                                 </a>
                             </li>
                             <li><strong>12:15 PM - ATRACCIÓN DEL PASE 3:</strong> Caminan en línea recta hacia el sur por 5ta avenida hasta ingresar al Edificio Empire State.
-                                <a href="https://maps.google.com/?q=MoMA+to+Empire+State+Building" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/The+Museum+of+Modern+Art,+11+W+53rd+St,+New+York,+NY+10019/Empire+State+Building,+20+W+34th+St,+New+York,+NY+10001/data=!4m14!4m13!1m5!1m1!19sChIJ87X6w6VZwokR-j53w-wG-bI!2m2!1d-73.9776216!2d40.7614327!1m5!1m1!19sChIJvS7V-FlZwokR6Yp_mC38pE0!2m2!1d-73.9856554!2d40.7484445!3e2" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🏙️</div>
                                     <span class="link-text">De MoMA a Empire State Building caminando</span>
                                 </a>
@@ -716,7 +807,7 @@
                         <h4>Hacia Times Square</h4>
                         <ul>
                             <li><strong>02:00 PM - Almuerzo:</strong> Caminan desde el mirador hacia el noroeste en dirección a Times Square para comer en Los Tacos No. 1 - Times Square.
-                                <a href="https://maps.google.com/?q=Empire+State+Building+to+Los+Tacos+No+1" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Empire+State+Building,+20+W+34th+St,+New+York,+NY+10001/Los+Tacos+No.+1,+758+7th+Ave,+New+York,+NY+10019/data=!4m14!4m13!1m5!1m1!19sChIJvS7V-FlZwokR6Yp_mC38pE0!2m2!1d-73.9856554!2d40.7484445!1m5!1m1!19sChIJ688v1aVZwokRL4bTIDV2fW0!2m2!1d-73.9841804!2d40.7599557!3e2" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🌮</div>
                                     <span class="link-text">De Empire State Building a Los Tacos No. 1 caminando</span>
                                 </a>
@@ -732,13 +823,13 @@
                         <ul>
                             <li><strong>02:45 PM - ATRACCIÓN DEL PASE 4:</strong> Caminan una cuadra hasta ingresar a Madame Tussauds Nueva York.</li>
                             <li><strong>04:00 PM - ATRACCIÓN DEL PASE 5:</strong> Caminan solo unos pasos a la vuelta por la misma cuadra para entrar a RiseNY y hacer el simulador de vuelo virtual sobre la ciudad.
-                                <a href="https://maps.google.com/?q=Los+Tacos+No+1+to+Madame+Tussauds+and+RiseNY" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Los+Tacos+No.+1,+758+7th+Ave,+New+York,+NY+10019/RiseNY,+150+W+42nd+St,+New+York,+NY+10036/data=!4m14!4m13!1m5!1m1!19sChIJ688v1aVZwokRL4bTIDV2fW0!2m2!1d-73.9841804!2d40.7599557!1m5!1m1!19sChIJ7wre06VZwokRk-Yh-bXg0qY!2m2!1d-73.986348!2d40.755493!3e2" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🚶</div>
                                     <span class="link-text">De Los Tacos No. 1 a Madame Tussauds y RiseNY caminando</span>
                                 </a>
                             </li>
                             <li><strong>05:45 PM - ATRACCIÓN DEL PASE 6:</strong> Caminan a la estación Estación Times Square-42 St y toman la Línea 7 (Dirección Yardas Hudson) hasta la última parada en 34 Estación St-Hudson Yards para subir directo a ver el atardecer en The Edge.
-                                <a href="https://maps.google.com/?q=RiseNY+to+Edge+via+Line+7" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/RiseNY,+150+W+42nd+St,+New+York,+NY+10036/Edge,+30+Hudson+Yards,+New+York,+NY+10001/data=!4m14!4m13!1m5!1m1!19sChIJ7wre06VZwokRk-Yh-bXg0qY!2m2!1d-73.986348!2d40.755493!1m5!1m1!19sChIJC7O2g85ZwokR4U3DqA3Q_Zk!2m2!1d-74.0007629!2d40.7528343!3e3" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🌇</div>
                                     <span class="link-text">De RiseNY a Edge via Line 7</span>
                                 </a>
@@ -753,7 +844,7 @@
                         <h4>Cena y regreso</h4>
                         <ul>
                             <li><strong>20:00 - Cena:</strong> Vuelven a tomar la Línea 7 hacia el este por dos paradas hasta Estación Times Square-42 St para cenar en Restaurante y panadería Junior.
-                                <a href="https://maps.google.com/?q=The+Edge+to+Junior+Restaurant+via+Line+7" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Edge,+30+Hudson+Yards,+New+York,+NY+10001/Junior's+Restaurant+%26+Bakery,+West+45th+Street,+New+York,+NY/data=!4m14!4m13!1m5!1m1!19sChIJC7O2g85ZwokR4U3DqA3Q_Zk!2m2!1d-74.0007629!2d40.7528343!1m5!1m1!19sChIJ7wre06VZwokRk-Yh-bXg0qY!2m2!1d-73.986348!2d40.755493!3e3" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🍰</div>
                                     <span class="link-text">The Edge a Junior's Restaurant via Line 7</span>
                                 </a>
@@ -779,7 +870,7 @@
                         <h4>5th Avenue Museums</h4>
                         <ul>
                             <li><strong>08:30 AM - Travel Uptown:</strong> Desde el hotel, caminan a la estación Times Sq - 42 St Station, toman la N Line, Q Line o R Line hasta Lexington Av/59 St Station, combinan ahí mismo con la 4 Line, 5 Line o 6 Line (Uptown) hasta 86 St Station y caminan hacia 5th Avenue.
-                                <a href="https://maps.google.com/?q=Hotel+to+Solomon+R+Guggenheim+Museum+via+Subway" target="_blank" class="action-link mt-2 mb-4">
+                                <a href="https://www.google.com/maps/dir/Candlewood+Suites+NYC+-+Times+Square,+an+IHG+Hotel,+West+39th+Street,+New+York,+NY/Solomon+R.+Guggenheim+Museum,+5th+Avenue,+New+York,+NY" target="_blank" class="action-link mt-2 mb-4">
                                     <div class="icon-box">🚇</div>
                                     <span class="link-text">Hotel to Solomon R. Guggenheim Museum via Subway</span>
                                 </a>
@@ -797,7 +888,7 @@
                         <ul>
                             <li><strong>01:15 PM - Lunch:</strong> Compran algo al paso en los carritos de comida de la calle o en The Halal Guys y hacen un picnic rápido en el pasto.</li>
                             <li><strong>01:45 PM - Central Park Walking Tour:</strong> Entran a Central Park justo detrás de The Met. Inician el recorrido cruzando de este a oeste hacia la zona norte-centro. Caminan viendo puntos espectaculares como Obelisk (Cleopatra's Needle), bordean The Great Lawn, bajan hacia el hermoso Belvedere Castle, pasan por The Lake, cruzan el icónico Bow Bridge y finalizan en Strawberry Fields. Salen del parque hacia Central Park West a la altura de W 72nd St.
-                                <a href="https://maps.google.com/?q=Central+Park+Walking+Tour+The+Met+to+Strawberry+Fields" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/The+Metropolitan+Museum+of+Art,+5th+Avenue,+New+York,+NY/Cleopatra's+Needle,+New+York,+NY/The+Great+Lawn,+New+York,+NY/Belvedere+Castle,+New+York,+NY/The+Lake,+New+York,+NY/Bow+Bridge,+New+York,+NY/Strawberry+Fields,+New+York,+NY" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🌳</div>
                                     <span class="link-text">Central Park Walking Tour (The Met to Strawberry Fields)</span>
                                 </a>
@@ -826,10 +917,10 @@
                             <li><strong>Point 1: Lincoln Center for the Performing Arts (07:30 PM):</strong> Disfrutan de las fuentes iluminadas y la icónica plaza de los teatros.</li>
                             <li><strong>Point 2: Columbus Circle:</strong> Desde Lincoln Center, caminan hacia el sureste por Broadway durante unas 4 cuadras hasta llegar a la famosa rotonda iluminada en la esquina suroeste de Central Park.</li>
                             <li><strong>Point 3: Carnegie Hall:</strong> Desde Columbus Circle, caminan hacia el este por W 57th St durante 3 cuadras largas hasta la esquina de 7th Ave para ver la fachada de este mítico teatro.</li>
-                            <li><strong>Point 4: The Plaza Hotel:</strong> Siguen caminando 2 cuadras más hacia el este por la misma W 57th St hasta 5th Ave, y bajan una cuadra por la avenida hasta la intersección con Central Park South para ver el hotel iluminado.</li>
+                            <li><strong>Point 4: The Plaza Hotel:</strong> Siguen caminando 2 cuadras más hacia el este por la misma W 57th St hasta 5th Ave, y bajan una una cuadra por la avenida hasta la intersección con Central Park South para ver el hotel iluminado.</li>
                             <li><strong>Point 5: Rockefeller Center:</strong> Desde The Plaza Hotel, caminan en línea recta hacia el sur por toda 5th Avenue durante unas 6 cuadras hasta W 49th St para ver el complejo iluminado.</li>
                             <li><strong>Point 6 (Final): Radio City Music Hall:</strong> Desde los árboles del Rockefeller Center, cruzan hacia el oeste por W 50th St solo una cuadra hasta 6th Ave para ver el gigantesco cartel de neón brillante.
-                                <a href="https://maps.google.com/?q=New+York+Illuminated+Walking+Tour" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Lincoln+Center+for+the+Performing+Arts/Columbus+Circle/Carnegie+Hall/The+Plaza/Rockefeller+Center/Radio+City+Music+Hall" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">✨</div>
                                     <span class="link-text">Complete "New York Illuminated" Walking Tour</span>
                                 </a>
@@ -842,7 +933,7 @@
                         <ul>
                             <li><strong>08:45 PM - Dinner on the way:</strong> Terminando en Radio City Music Hall, caminan hacia el sur en dirección a su hotel. Para comer de camino al alojamiento, tienen un local de Shake Shack - Theater District (en 44th St & 8th Ave) o un Los Tacos No. 1 (en 43rd St entre 7th Ave & 8th Ave) que les quedan perfectamente sobre la ruta de bajada a pie.</li>
                             <li><strong>Return to Hotel:</strong> Terminan de cenar y caminan las pocas cuadras restantes hasta llegar a Candlewood Suites New York City - Times Square, an IHG Hotel (W 39th St entre 8th Ave & 9th Ave) para descansar.
-                                <a href="https://maps.google.com/?q=Radio+City+Music+Hall+to+Hotel+via+Dinner" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Radio+City+Music+Hall/Shake+Shack+Theater+District,+8th+Avenue,+New+York,+NY/Candlewood+Suites+NYC+-+Times+Square,+an+IHG+Hotel,+West+39th+Street,+New+York,+NY" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🛌</div>
                                     <span class="link-text">Final Walk from Radio City Music Hall to Hotel via Dinner Area</span>
                                 </a>
@@ -869,7 +960,7 @@
                             <li><strong>09:00 AM - Llegada a Hudson Yards:</strong> Salen caminando o en metro (7 linea) hasta la estación 34 Estación St-Hudson Yards.</li>
                             <li><strong>09:15 AM - Recorrido por Hudson Yards:</strong> Admiran la arquitectura de El barco, el cobertizo y pasean por Plaza Pública y Jardines.</li>
                             <li><strong>10:15 AM - Mercado Little Spain:</strong> Ingresan a Mercado Little Spain ubicado en la planta baja de 10 yardas Hudson para recorrer sus puestos gastronómicos tradicionales y tomar un café o snack.
-                                <a href="https://maps.google.com/?q=Hotel+to+Hudson+Yards+The+Vessel+Little+Spain" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/The+Vessel,+20+Hudson+Yards,+New+York,+NY+10001/Mercado+Little+Spain,+10+Hudson+Yards,+New+York,+NY+10001/data=!4m20!4m19!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!1m5!1m1!19sChIJqygAFrRZwokRwF0VrBoXS0E!2m2!1d-74.0018285!2d40.7538202!1m5!1m1!19sChIJKU2iR7RZwokRA1iP27-f4eA!2m2!1d-74.001719!2d40.752391!3e2?authuser=1" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">☕</div>
                                     <span class="link-text">Del Hotel a Hudson Yards, The Vessel y Mercado Little Spain</span>
                                 </a>
@@ -888,7 +979,7 @@
                             <li><strong>01:30 PM - Perlita 1 (Pier 57 & Rooftop Park):</strong> Salen de Chelsea Market y cruzan a Muelle 57, un muelle restaurado que cuenta con Mercado 57 y un parque en la terraza (Parque en la azotea del muelle 57) con vistas panorámicas de Lower Manhattan y Hudson River.</li>
                             <li><strong>02:15 PM - Perlita 2 (Little Island en Pier 55):</strong> Caminan dos minutos al sur hacia pequeña isla, el famoso parque flotante apoyado sobre estructuras de hormigón en forma de tulipán.</li>
                             <li><strong>03:00 PM - Meatpacking District y Perlita 3 (Muelle 54):</strong> Cruzan brevemente por Distrito empacador de carne y pasan por la entrada histórica del antiguo muelle del Titanic en Muelle 54.
-                                <a href="https://maps.google.com/?q=High+Line+Chelsea+Market+Pier+57+Little+Island+Meatpacking" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/The+Vessel,+20+Hudson+Yards,+New+York,+NY+10001/The+High+Line,+New+York,+NY/Chelsea+Market,+9th+Avenue,+New+York,+NY/Pier+57,+15th+St,+New+York,+NY/Little+Island,+Pier+55+at+W+13th+St,+New+York,+NY+10014/data=!4m32!4m31!1m5!1m1!19sChIJqygAFrRZwokRwF0VrBoXS0E!2m2!1d-74.0018285!2d40.7538202!1m5!1m1!19sChIJY46T_aVZwokR7H6_qfE201s!2m2!1d-74.0048227!2d40.7479925!1m5!1m1!19sChIJ9_mG-qNZwokR53XvWz1h_pY!2m2!1d-74.0061914!2d40.7420173!1m5!1m1!19sChIJ2flq7qNZwokRR-fM5Yp-FkE!2m2!1d-74.0097721!2d40.7424578!1m5!1m1!19sChIJAQAAAG1ZwokR6I6S3Z45_S0!2m2!1d-74.0131498!2d40.7413159!3e2?authuser=1" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🚢</div>
                                     <span class="link-text">Recorrido a pie por High Line, Chelsea Market, Piers y Meatpacking</span>
                                 </a>
@@ -911,7 +1002,7 @@
                                 </ul>
                             </li>
                             <li><strong>05:00 PM - Tour del SoHo (Distrito Histórico de Hierro Fundido):</strong> Cruzan W Houston St para ingresar a SoHo. Recorren las calles empedradas de calle verde, calle primavera y Calle Príncipe contemplando la arquitectura de hierro fundido, las galerías de arte y las tiendas boutique abiertas.
-                                <a href="https://maps.google.com/?q=Greenwich+Village+SoHo" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/Little+Island,+Pier+55+at+W+13th+St,+New+York,+NY+10014/Friends+Apartment,+Bedford+Street,+New+York,+NY/Carrie+Bradshaw's+House,+Perry+Street,+New+York,+NY/Washington+Square+Park,+Washington+Square,+New+York,+NY/SoHo,+New+York,+NY/data=!4m32!4m31!1m5!1m1!19sChIJAQAAAG1ZwokR6I6S3Z45_S0!2m2!1d-74.0131498!2d40.7413159!1m5!1m1!19sChIJX_sJCKNZwokRQZf3_3bMNoI!2m2!1d-74.0053535!2d40.7325251!1m5!1m1!19sChIJ34mP-KNZwokRh09K1i31L7M!2m2!1d-74.0033878!2d40.7352345!1m5!1m1!19sChIJ64IAtKJZwokRAtP3I4LqAnE!2m2!1d-73.997332!2d40.723301!1m5!1m1!19sChIJM3R434hZwokRjIbg2ewaGdEI!2m2!1d-74.000652!2d40.723301!3e2?authuser=1" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">⛲</div>
                                     <span class="link-text">Recorrido por Greenwich Village, Friends Appt, Washington Sq y SoHo</span>
                                 </a>
@@ -934,7 +1025,7 @@
                             </li>
                             <li><strong>07:15 PM - Viaje de vuelta al Hotel:</strong> Desde Estación de tren Franklin St (el Estación de Canal St), toman la 1 línea el Línea A / Línea C/ Línea E (Dirección Zona residencial) directamente hasta 42 St - Estación terminal de autobuses de la Autoridad Portuaria, a dos cuadras del hotel.</li>
                             <li><strong>07:45 PM - Compran comida al paso y descanso:</strong> Compran la cena en locales cercanos al hotel (deli, pizza o comida rápida) para comer tranquilos en la habitación.
-                                <a href="https://maps.google.com/?q=SoHo+to+TriBeCa+to+Hotel" target="_blank" class="action-link mt-2">
+                                <a href="https://www.google.com/maps/dir/SoHo,+New+York,+NY/Staple+Street+Skybridge,+Jay+Street,+New+York,+NY/Hook+%26+Ladder+8,+14+N+Moore+St,+New+York,+NY+10013/Franklin+St,+New+York,+NY+10013/Candlewood+Suites+New+York+City-+Times+Square+by+IHG,+339+W+39th+St,+New+York,+NY+10018/data=!4m32!4m31!1m5!1m1!19sChIJM3R434hZwokRjIbg2ewaGdEI!2m2!1d-74.000652!2d40.723301!1m5!1m1!19sChIJaV2U3X9ZwokRV5g1gS2-2S4!2m2!1d-74.0083232!2d40.7190412!1m5!1m1!19sChIJO6R4j39ZwokR94-Kj81_kCo!2m2!1d-74.0066465!2d40.7196025!1m5!1m1!19sChIJ22xskX9ZwokRWgIscz_4eSw!2m2!1d-74.006804!2d40.719313!1m5!1m1!19sChIJG5JhL61ZwokRnJIYIY4nbVg!2m2!1d-73.9929784!2d40.7562908!3e3?authuser=1" target="_blank" class="action-link mt-2">
                                     <div class="icon-box">🚇</div>
                                     <span class="link-text">Recorrido por SoHo a TriBeCa y regreso al Hotel via Subway</span>
                                 </a>
@@ -1408,6 +1499,32 @@
     </nav>
 
     <script>
+        // --- LOGICA DE CONTROL DE TAMAÑO DE FUENTE ---
+        let currentFontSize = 16;
+        const MIN_FONT = 12;
+        const MAX_FONT = 26;
+
+        function initFontSize() {
+            const savedSize = localStorage.getItem('ny-font-size');
+            if (savedSize) {
+                currentFontSize = parseInt(savedSize, 10);
+                document.documentElement.style.fontSize = currentFontSize + 'px';
+            }
+        }
+
+        function changeFontSize(delta) {
+            let newSize = currentFontSize + delta;
+            if (newSize >= MIN_FONT && newSize <= MAX_FONT) {
+                currentFontSize = newSize;
+                document.documentElement.style.fontSize = currentFontSize + 'px';
+                localStorage.setItem('ny-font-size', currentFontSize);
+            }
+        }
+
+        // Inicializar tamaño de fuente guardado al cargar
+        initFontSize();
+
+        // --- LOGICA DE NAVEGACION ---
         let currentDay = 'home';
         
         function hideAllViews() {
@@ -1427,12 +1544,22 @@
             // Bottom Nav State
             if (currentDay === 'home') {
                 btnPrev.disabled = true;
-                btnNext.disabled = false;
+                btnNext.disabled = true;
+                btnPrev.style.visibility = 'hidden'; 
+                btnNext.style.visibility = 'hidden';
                 btnHome.classList.add('active');
             } else {
                 btnHome.classList.remove('active');
-                btnPrev.disabled = false;
+                
+                btnPrev.style.visibility = 'visible';
+                btnNext.style.visibility = 'visible';
+
+                btnPrev.disabled = (currentDay === 1);
                 btnNext.disabled = (currentDay === 10);
+                
+                // Ocultar botones en los extremos para dejarlo visualmente claro
+                if (currentDay === 1) btnPrev.style.visibility = 'hidden';
+                if (currentDay === 10) btnNext.style.visibility = 'hidden';
             }
 
             // Top Pill State & Auto-Scroll
@@ -1462,20 +1589,13 @@
         }
 
         function prevDay() {
-            if (currentDay === 'home') return;
-            if (currentDay === 1) {
-                goToDay('home');
-            } else {
-                goToDay(currentDay - 1);
-            }
+            if (currentDay === 'home' || currentDay === 1) return;
+            goToDay(currentDay - 1);
         }
 
         function nextDay() {
-            if (currentDay === 'home') {
-                goToDay(1);
-            } else if (currentDay < 10) {
-                goToDay(currentDay + 1);
-            }
+            if (currentDay === 'home' || currentDay === 10) return;
+            goToDay(currentDay + 1);
         }
 
         // Initialize state
