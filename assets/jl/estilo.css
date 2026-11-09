@@ -1,0 +1,15 @@
+:root { --bg: #ffffff; --txt: #1a1a1f; --sub: #5f5f6b; --acc: #e6267a; --linea: #e4e4ea; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0f0f14; --txt: #ececf1; --sub: #a0a0ae; --acc: #ff4f96; --linea: #2a2a36; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--txt); font: 16px/1.6 system-ui, "Segoe UI", sans-serif; }
+main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+h1 { font-size: 28px; margin: 0 0 4px; color: var(--acc); }
+h2 { font-size: 19px; margin: 28px 0 6px; }
+.sub { color: var(--sub); margin-top: 0; }
+.aviso { color: var(--sub); font-size: 14px; border-top: 1px solid var(--linea); padding-top: 16px; margin-top: 32px; }
+a { color: var(--acc); }
+nav { margin-top: 24px; }
+hr { border: 0; border-top: 1px solid var(--linea); margin: 40px 0; }
+li { margin-bottom: 6px; }
