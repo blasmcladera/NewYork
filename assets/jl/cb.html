@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jason&amp;Lucia Clips</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<main>
+  <h1>Conectando…</h1>
+  <p class="sub">Si no pasa nada en unos segundos, vuelve a la aplicación en tu ordenador.</p>
+</main>
+<script>
+  // Reenvía la respuesta de autorización a la herramienta que corre en este mismo ordenador.
+  location.replace("http://localhost:5051/callback/" + location.search);
+</script>
+</body>
+</html>
